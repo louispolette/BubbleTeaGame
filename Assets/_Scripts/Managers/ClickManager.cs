@@ -13,6 +13,12 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     public static event MouseClickDown OnMouseClickDown;
 
+    public delegate void MouseClickHold();
+    /// <summary>
+    /// Invoqué chaque frame où le ClickManager détecte que le clic de la souris est maintenu
+    /// </summary>
+    public static event MouseClickHold OnMouseClickHold;
+
     public delegate void MouseClickUp();
     /// <summary>
     /// Invoqué lorsque le ClickManager détecte relâchement d'un clic de la souris
@@ -35,7 +41,11 @@ public class ClickManager : MonoBehaviour
 
     private void Update()
     {
+        // Get info
+
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // Get input & send events
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -50,18 +60,22 @@ public class ClickManager : MonoBehaviour
             }
         }
 
+        if (Input.GetMouseButton(0))
+        {
+            OnMouseClickHold?.Invoke();
+        }
+
         if (Input.GetMouseButtonUp(0))
         {
-            if (OnMouseClickUp != null)
-            {
-                OnMouseClickUp();
-            }
+            OnMouseClickUp?.Invoke();
 
             if (draggedObject)
             {
-                ReleaseDraggedObject();
+                StopDraggingObject();
             }
         }
+
+        // Update dragged object
 
         if (draggedObject)
         {
@@ -74,6 +88,8 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     private void DragObject()
     {
+        draggedObject.onDrag.Invoke();
+
         Vector3 targetPosition = mousePosition + _offset;
 
         if (draggedObject.Rigidbody) // Utilise Rigidbody si possible
@@ -86,8 +102,28 @@ public class ClickManager : MonoBehaviour
         }
     }
 
-    private void ReleaseDraggedObject()
+    /// <summary>
+    /// Permet de set l'objet tenu à l'objet donné en paramètre
+    /// </summary>
+    /// <param name="newObject">L'objet à tenir</param>
+    public void StartDraggingObject(ClickableObject newObject)
     {
+        if (draggedObject != null) StopDraggingObject();
+
+        newObject.IsBeingDragged = true;
+        newObject.onDragStart.Invoke();
+        draggedObject = newObject;
+    }
+
+    /// <summary>
+    /// Arrête de déplacer l'objet actuellement tenu
+    /// </summary>
+    public void StopDraggingObject()
+    {
+        if (draggedObject == null) return;
+
+        draggedObject.IsBeingDragged = false;
+        draggedObject.onDrop.Invoke();
         draggedObject = null;
     }
 
