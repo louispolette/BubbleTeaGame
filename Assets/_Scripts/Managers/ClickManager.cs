@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class ClickManager : MonoBehaviour
 {
+    [Tooltip("Fréquence en secondes de la détection de mouvement des objets tirés")]
+    [SerializeField] private float _moveDetectionTimestep = 0.05f;
+
     public static ClickManager Instance;
 
     public static Vector3 mousePosition;
@@ -26,6 +29,9 @@ public class ClickManager : MonoBehaviour
     public static event MouseClickUp OnMouseClickUp;
 
     private Vector3 _offset;
+    private bool _isDraggingObject;
+
+    private float _moveDetectionTimer;
 
     private void Awake()
     {
@@ -77,10 +83,38 @@ public class ClickManager : MonoBehaviour
 
         // Update dragged object
 
-        if (draggedObject)
+        if (_isDraggingObject)
         {
+            draggedObject.onDragged.Invoke();
+            if (draggedObject.IsMoving) draggedObject.onMoved.Invoke();
+
             DragObject();
+
+            _moveDetectionTimer += Time.deltaTime;
+
+            if(_moveDetectionTimer >= _moveDetectionTimestep)
+            {
+                MoveDetectionUpdate();
+            }
         }
+    }
+
+    private void MoveDetectionUpdate()
+    {
+        _moveDetectionTimer = 0f;
+        
+        Debug.Log(Vector2.Distance(draggedObject.transform.position, draggedObject.lastPosition));
+        //if (Vector2.Distance(draggedObject.transform.position, draggedObject.lastPosition) >= _immobileObjectLeniency)
+        if (draggedObject.transform.position != draggedObject.lastPosition)
+        {
+            draggedObject.IsMoving = true;
+        }
+        else
+        {
+            draggedObject.IsMoving = false;
+        }
+
+        draggedObject.lastPosition = draggedObject.transform.position;
     }
 
     /// <summary>
@@ -88,18 +122,9 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     private void DragObject()
     {
-        draggedObject.onDrag.Invoke();
-
         Vector3 targetPosition = mousePosition + _offset;
 
-        if (draggedObject.Rigidbody) // Utilise Rigidbody si possible
-        {
-            draggedObject.Rigidbody.MovePosition(targetPosition);
-        }
-        else
-        {
-            draggedObject.transform.position = targetPosition;
-        }
+        draggedObject.Drag(targetPosition);
     }
 
     /// <summary>
@@ -108,10 +133,13 @@ public class ClickManager : MonoBehaviour
     /// <param name="newObject">L'objet à tenir</param>
     public void StartDraggingObject(ClickableObject newObject)
     {
+        _isDraggingObject = true;
+
         if (draggedObject != null) StopDraggingObject();
 
         newObject.IsBeingDragged = true;
-        newObject.onDragStart.Invoke();
+        newObject.IsMoving = false;
+        newObject.onDraggedStart.Invoke();
         draggedObject = newObject;
     }
 
@@ -120,10 +148,13 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     public void StopDraggingObject()
     {
+        _isDraggingObject = false;
+
         if (draggedObject == null) return;
 
         draggedObject.IsBeingDragged = false;
-        draggedObject.onDrop.Invoke();
+        draggedObject.IsMoving = false;
+        draggedObject.onDropped.Invoke();
         draggedObject = null;
     }
 

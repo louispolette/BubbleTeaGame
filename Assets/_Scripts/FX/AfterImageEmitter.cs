@@ -1,4 +1,3 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
