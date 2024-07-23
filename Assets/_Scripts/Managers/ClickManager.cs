@@ -1,8 +1,10 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ClickManager : MonoBehaviour
 {
-    [Tooltip("Fréquence en secondes de la détection de mouvement des objets tirés")]
+    [Tooltip("Fréquence en secondes de la détection de mouvement des objets tirés\n\nPlus cette valeur est petite, plus la détection de mouvement sera sensible")]
     [SerializeField] private float _moveDetectionTimestep = 0.05f;
 
     public static ClickManager Instance;
@@ -30,8 +32,11 @@ public class ClickManager : MonoBehaviour
 
     private Vector3 _offset;
     private bool _isDraggingObject;
-
     private float _moveDetectionTimer;
+
+    private Camera _mainCamera;
+
+    public List<ClickableObject> ClickedObjectsThisFrame { get; set; } = new List<ClickableObject>();
 
     private void Awake()
     {
@@ -43,68 +48,156 @@ public class ClickManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        _mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        // Get info
+        // Get mouse position
 
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
         // Get input & send events
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (OnMouseClickDown != null)
-            {
-                OnMouseClickDown();
+        HandleInput();
 
-                if (draggedObject)
-                {
-                    _offset = draggedObject.transform.position - mousePosition;
-                }
+        // Move dragged object
+
+        if (!_isDraggingObject) return;
+
+        draggedObject.onDragged.Invoke();
+
+        if (draggedObject.IsMoving)
+        {
+            draggedObject.onMoved.Invoke();
+        }
+
+        DragObject();
+
+        // Check if dragged object has moved
+
+        _moveDetectionTimer += Time.deltaTime;
+
+        if (_moveDetectionTimer >= _moveDetectionTimestep)
+        {
+            DoMoveDetectionUpdate();
+        }
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetMouseButtonDown(0) && OnMouseClickDown != null)
+        {
+            ClickedObjectsThisFrame.Clear();
+
+            OnMouseClickDown();
+
+            ClickableObject clickedObject = GetObjectInFront(ClickedObjectsThisFrame);
+
+            if (clickedObject != null)
+            {
+                clickedObject.onClickedDown.Invoke();
+
+                if (clickedObject.IsDraggable) StartDraggingObject(clickedObject);
+            }
+
+            if (draggedObject)
+            {
+                _offset = draggedObject.transform.position - mousePosition;
             }
         }
 
         if (Input.GetMouseButton(0))
         {
-            OnMouseClickHold?.Invoke();
+            if (!draggedObject)
+            {
+                OnMouseClickHold?.Invoke();
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            OnMouseClickUp?.Invoke();
-
             if (draggedObject)
             {
                 StopDraggingObject();
             }
-        }
-
-        // Update dragged object
-
-        if (_isDraggingObject)
-        {
-            draggedObject.onDragged.Invoke();
-            if (draggedObject.IsMoving) draggedObject.onMoved.Invoke();
-
-            DragObject();
-
-            _moveDetectionTimer += Time.deltaTime;
-
-            if(_moveDetectionTimer >= _moveDetectionTimestep)
+            else
             {
-                MoveDetectionUpdate();
+                OnMouseClickUp?.Invoke();
             }
         }
     }
 
-    private void MoveDetectionUpdate()
+    /// <summary>
+    /// Renvoie l'objet cliquable parmi tous ceux dans la liste donnée qui est rendu au-dessus des autres
+    /// </summary>
+    /// <returns></returns>
+    private ClickableObject GetObjectInFront(List<ClickableObject> clickedObjects)
+    {
+        if (clickedObjects.Count == 0) return null;
+
+        ClickableObject objectInFront = clickedObjects[0];
+        float lowestRendererPosition = objectInFront._renderer.transform.position.y;
+
+
+
+        for (int i = 1; i < clickedObjects.Count; i++)
+        {
+            SortingLayerComparison layerComparison = CompareSortingLayers();
+
+            switch (layerComparison)
+            {
+                case SortingLayerComparison.CurrentIsHigher:
+                    objectInFront = clickedObjects[i];
+                    break;
+                case SortingLayerComparison.CurrentIsLower:
+                    break;
+                case SortingLayerComparison.Equal:
+
+                    break;
+            }
+
+            float rendererPosition = clickedObjects[i]._renderer.transform.position.y;
+
+            if (rendererPosition < lowestRendererPosition)
+            {
+                lowestRendererPosition = rendererPosition;
+                objectInFront = clickedObjects[i];
+            }
+
+            SortingLayerComparison CompareSortingLayers()
+            {
+                int currentObjectLayerVal = SortingLayer.GetLayerValueFromID(clickedObjects[i]._renderer.sortingLayerID);
+                int objectInFrontLayerVal = SortingLayer.GetLayerValueFromID(objectInFront._renderer.sortingLayerID);
+
+                if (currentObjectLayerVal > objectInFrontLayerVal)
+                {
+                    return SortingLayerComparison.CurrentIsHigher;
+                }
+                else if (currentObjectLayerVal < objectInFrontLayerVal)
+                {
+                    return SortingLayerComparison.CurrentIsLower;
+                }
+                else
+                {
+                    return SortingLayerComparison.Equal;
+                }
+            }
+
+        }
+    }
+
+            enum SortingLayerComparison { CurrentIsHigher, CurrentIsLower, Equal }
+
+
+/// <summary>
+/// Vérifie si l'objet tiré a changé de position depuis le dernier appel de cette méthode
+/// </summary>
+private void DoMoveDetectionUpdate()
     {
         _moveDetectionTimer = 0f;
         
-        Debug.Log(Vector2.Distance(draggedObject.transform.position, draggedObject.lastPosition));
-        //if (Vector2.Distance(draggedObject.transform.position, draggedObject.lastPosition) >= _immobileObjectLeniency)
         if (draggedObject.transform.position != draggedObject.lastPosition)
         {
             draggedObject.IsMoving = true;

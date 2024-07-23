@@ -97,11 +97,12 @@ public class ClickableObject : MonoBehaviour
     /// True si l'objet a été cliqué dans sa zone cliquable lors du dernier clic, revient à false au prochain relâchement de clic
     /// </summary>
     public bool HasBeenClickedInArea { get; private set; } = false;
+    public bool IsDraggable { get => _isDraggable; }
     public bool IsBeingDragged { get; set; } = false;
     public Vector3 lastPosition { get; set; }
 
-    private Renderer _renderer;
-    private Collider2D _collider;
+    public Renderer _renderer { get; private set; }
+    public Collider2D _collider { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
 
     private bool isMoving = false;
@@ -171,12 +172,14 @@ public class ClickableObject : MonoBehaviour
         HasBeenClickedInArea = true;
         mouseHasExitedArea = false;
 
-        if (_isDraggable)
+        ClickManager.Instance.ClickedObjectsThisFrame.Add(this);
+
+/*        if (_isDraggable)
         {
             ClickManager.Instance.StartDraggingObject(this);
         }
 
-        onClickedDown.Invoke();
+        onClickedDown.Invoke();*/
     }
 
     /// <summary>
