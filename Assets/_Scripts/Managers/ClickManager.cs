@@ -138,63 +138,97 @@ public class ClickManager : MonoBehaviour
         if (clickedObjects.Count == 0) return null;
 
         ClickableObject objectInFront = clickedObjects[0];
-        float lowestRendererPosition = objectInFront._renderer.transform.position.y;
-
-
 
         for (int i = 1; i < clickedObjects.Count; i++)
         {
-            SortingLayerComparison layerComparison = CompareSortingLayers();
+            // We first compare sorting layers
 
-            switch (layerComparison)
+            Comparison layerComparison = CompareSortingLayers();
+
+            if (layerComparison == Comparison.CurrentIsHigher)
             {
-                case SortingLayerComparison.CurrentIsHigher:
-                    objectInFront = clickedObjects[i];
-                    break;
-                case SortingLayerComparison.CurrentIsLower:
-                    break;
-                case SortingLayerComparison.Equal:
-
-                    break;
-            }
-
-            float rendererPosition = clickedObjects[i]._renderer.transform.position.y;
-
-            if (rendererPosition < lowestRendererPosition)
-            {
-                lowestRendererPosition = rendererPosition;
                 objectInFront = clickedObjects[i];
             }
+            else if (layerComparison == Comparison.Equal)
+            {
+                // If they're the same, we compare sorting orders
 
-            SortingLayerComparison CompareSortingLayers()
+                Comparison sortOrderComparison = CompareSortingOrders();
+
+                if (sortOrderComparison == Comparison.CurrentIsHigher)
+                {
+                    objectInFront = clickedObjects[i];
+                }
+                else if (sortOrderComparison == Comparison.Equal)
+                {
+                    // If they're also the same, we compare their y positions
+
+                    float currentRendererPosition = clickedObjects[i]._renderer.transform.position.y;
+                    float objectInFrontRendererPosition = objectInFront._renderer.transform.position.y;
+
+                    if (currentRendererPosition < objectInFrontRendererPosition)
+                    {
+                        objectInFront = clickedObjects[i];
+                    }
+                }
+            }
+
+            #region comparision functions
+
+            Comparison CompareSortingLayers()
             {
                 int currentObjectLayerVal = SortingLayer.GetLayerValueFromID(clickedObjects[i]._renderer.sortingLayerID);
                 int objectInFrontLayerVal = SortingLayer.GetLayerValueFromID(objectInFront._renderer.sortingLayerID);
 
                 if (currentObjectLayerVal > objectInFrontLayerVal)
                 {
-                    return SortingLayerComparison.CurrentIsHigher;
+                    return Comparison.CurrentIsHigher;
                 }
                 else if (currentObjectLayerVal < objectInFrontLayerVal)
                 {
-                    return SortingLayerComparison.CurrentIsLower;
+                    return Comparison.CurrentIsLower;
                 }
                 else
                 {
-                    return SortingLayerComparison.Equal;
+                    return Comparison.Equal;
                 }
             }
 
+            Comparison CompareSortingOrders()
+            {
+                int currentObjectSortOrder = clickedObjects[i]._renderer.sortingOrder;
+                int objectInFrontSortingOrder = objectInFront._renderer.sortingOrder;
+
+                if (currentObjectSortOrder > objectInFrontSortingOrder)
+                {
+                    return Comparison.CurrentIsHigher;
+                }
+                else if (currentObjectSortOrder < objectInFrontSortingOrder)
+                {
+                    return Comparison.CurrentIsLower;
+                }
+                else
+                {
+                    return Comparison.Equal;
+                }
+            }
+
+            #endregion
         }
+
+        return objectInFront;
     }
 
-            enum SortingLayerComparison { CurrentIsHigher, CurrentIsLower, Equal }
+    /// <summary>
+    /// Utilisé dans GetObjectInFront()
+    /// </summary>
+    private enum Comparison { CurrentIsHigher, CurrentIsLower, Equal }
 
 
-/// <summary>
-/// Vérifie si l'objet tiré a changé de position depuis le dernier appel de cette méthode
-/// </summary>
-private void DoMoveDetectionUpdate()
+    /// <summary>
+    /// Vérifie si l'objet tiré a changé de position depuis le dernier appel de cette méthode
+    /// </summary>
+    private void DoMoveDetectionUpdate()
     {
         _moveDetectionTimer = 0f;
         
