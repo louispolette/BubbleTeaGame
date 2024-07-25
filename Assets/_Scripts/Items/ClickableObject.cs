@@ -53,6 +53,7 @@ public class ClickableObject : MonoBehaviour
 
     [Space]
 
+    [ConditionalHide("_isDraggable")]
     [Tooltip("Fonctions appelées quand l'objet commence à être tiré")]
     public UnityEvent onDraggedStart;
 
