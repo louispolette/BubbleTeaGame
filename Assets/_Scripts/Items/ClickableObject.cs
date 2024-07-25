@@ -14,73 +14,56 @@ public class ClickableObject : MonoBehaviour
     [Tooltip("La méthode utilisée pour définir la zone cliquable de l'objet")]
     [SerializeField] ClickAreaMode clickAreaMode = ClickAreaMode.useRenderer;
 
-    #region events
-
-    [Header("Click Events")]
-
-    [Space]
-
-    [Tooltip("Fonctions appelées à chaque clic sur la zone cliquable de l'objet")]
-    public UnityEvent onClickedDown;
-
-    [Space]
+    [Header("Event Settings")]
 
     [Tooltip("Définit si onClickedUp() peut être déclenché même si la souris n'est pas sur la zone cliquable si l'objet a été cliqué au préalable")]
     [SerializeField] private ClickUpMode clickUpMode = ClickUpMode.Permissive;
 
     [Space]
 
-    [Tooltip("Fonctions appelées à chaque relâchement de clic sur la zone cliquable de l'objet ou n'importe où si l'objet a été cliqué au préalable (en fonction de ClickUpMode)")]
-    public UnityEvent onClickedUp;
-
-    [Space]
+    [Tooltip("Définit si la souris doit rester sur la zone cliquable pour déclencher onClickHeld")]
+    [SerializeField] private bool mustStayInAreaToHold = true;
 
     [Tooltip("Définit si le joueur doit d'abord cliquer sur la zone cliquable ou non pour pouvoir déclencher onClickHeld()")]
     [SerializeField] private ClickHoldMode clickHoldMode = ClickHoldMode.MustClickOnAreaFirst;
 
-    [Tooltip("Définit si la souris doit rester sur la zone cliquable pour déclencher onClickHeld")]
-    [SerializeField] private bool mustStayInAreaToHold = true;
-
     [Tooltip("Permet de déclencher onClickedDown et/ou onClickedUp lorsque la souris sort et rentre de la zone cliquable tout en gardant le clic appuyé")]
     [SerializeField] private HoldLeaveMode extraEventCalls = HoldLeaveMode.ClickDownAndClickUp;
 
-    [Space]
+    #region events
+
+    [Header("Events")]
+
+    [Tooltip("Fonctions appelées à chaque clic sur la zone cliquable de l'objet")]
+    public UnityEvent onClickedDown;
+
+    [Tooltip("Fonctions appelées à chaque relâchement de clic sur la zone cliquable de l'objet ou n'importe où si l'objet a été cliqué au préalable (en fonction de ClickUpMode)")]
+    public UnityEvent onClickedUp;
 
     [Tooltip("Fonctions appelées chaque frame où le clic est maintenu sur l'objet")]
     public UnityEvent onClickHeld;
 
-    [Header("Drag Events")]
-
-    [Space]
-
-    [ConditionalHide("_isDraggable")]
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées quand l'objet commence à être tiré")]
     public UnityEvent onDraggedStart;
 
-    [Space]
-
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées chaque frame où l'objet est tiré")]
     public UnityEvent onDragged;
 
-    [Space]
-
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est relâché")]
     public UnityEvent onDropped;
 
-    [Header("Drag Move Events")]
-
-    [Space]
-
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est tiré et commence à se déplacer")]
     public UnityEvent onMovedStart;
 
-    [Space]
-
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées chaque frame où l'objet est tiré et se déplace")]
     public UnityEvent onMoved;
 
-    [Space]
-
+    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est tiré et arrête de se déplacer")]
     public UnityEvent onMovedStop;
 
@@ -132,6 +115,7 @@ public class ClickableObject : MonoBehaviour
         MustClickOnAreaFirst,
         Unrestricted
     }
+    //TRY TO USE FLAGS
     public enum HoldLeaveMode
     {
         ClickDownAndClickUp,

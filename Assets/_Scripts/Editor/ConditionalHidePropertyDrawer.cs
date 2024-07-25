@@ -1,11 +1,25 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditorInternal;
 
 //Original version of the ConditionalHideAttribute created by Brecht Lecluyse (www.brechtos.com)
 
 [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
 public class ConditionalHidePropertyDrawer : PropertyDrawer
 {
+    private UnityEventDrawer eventDrawer;
+    private UnityEventDrawer EventDrawer
+    {
+        get
+        {
+            if (eventDrawer == null)
+            {
+                eventDrawer = new UnityEventDrawer();
+            }
+            return eventDrawer;
+        }
+    }
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         // Get attribute data
@@ -19,10 +33,15 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer
 
         if (!condHAtt.HideInInspector || enabled)
         {
-            EditorGUI.PropertyField(position, property, label, true);
+            if (property.type == "UnityEvent")
+            {
+                EventDrawer.OnGUI(position, property, label);
+            }
+            else
+            {
+                EditorGUI.PropertyField(position, property, label, true);
+            }
         }
-
-        // FIND OUT HOW TO DRAW UNITY EVENTS
 
         GUI.enabled = wasEnabled;
     }
@@ -34,6 +53,11 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer
 
         if (!condHAtt.HideInInspector || enabled)
         {
+            if (property.type == "UnityEvent")
+            {
+                return EventDrawer.GetPropertyHeight(property, label);
+            }
+
             return EditorGUI.GetPropertyHeight(property, label);
         }
         else
