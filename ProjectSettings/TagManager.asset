@@ -44,3 +44,6 @@ TagManager:
   - name: Draggable Items
     uniqueID: 425974903
     locked: 0
+  - name: FX
+    uniqueID: 378588365
+    locked: 0

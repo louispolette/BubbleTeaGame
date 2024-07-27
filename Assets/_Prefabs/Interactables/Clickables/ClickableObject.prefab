@@ -129,6 +129,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDraggable: 1
+  _isDraggable: 0
   clickAreaMode: 0
+  clickUpMode: 0
+  mustStayInAreaToHold: 1
+  clickHoldMode: 0
+  extraEventCalls: 0
+  onClickedDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onClickedUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onClickHeld:
+    m_PersistentCalls:
+      m_Calls: []
+  onDraggedStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragged:
+    m_PersistentCalls:
+      m_Calls: []
+  onDropped:
+    m_PersistentCalls:
+      m_Calls: []
+  onMovedStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onMoved:
+    m_PersistentCalls:
+      m_Calls: []
+  onMovedStop:
+    m_PersistentCalls:
+      m_Calls: []
   _showClickableArea: 0

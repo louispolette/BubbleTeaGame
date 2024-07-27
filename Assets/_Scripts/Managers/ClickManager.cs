@@ -1,11 +1,25 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ClickManager : MonoBehaviour
 {
+    #region serialized members
+
+    [Space]
+
+    [Tooltip("Effet créé à la position de la souris lorsque le joueur clique")]
+    [SerializeField] private ParticleSystem _clickEffect;
+
+    [SerializeField] private AudioClip _clickSound;
+
+    [Space]
+
     [Tooltip("Fréquence en secondes de la détection de mouvement des objets tirés\n\nPlus cette valeur est petite, plus la détection de mouvement sera sensible")]
     [SerializeField] private float _moveDetectionTimestep = 0.05f;
+
+    #endregion
+
+    #region unserialized members
 
     public static ClickManager Instance;
 
@@ -35,11 +49,16 @@ public class ClickManager : MonoBehaviour
     private float _moveDetectionTimer;
 
     private Camera _mainCamera;
+    private ParticleSystem _clickFXInstance;
+    private AudioSource _audioSource;
 
     public List<ClickableObject> ClickedObjectsThisFrame { get; set; } = new List<ClickableObject>();
 
+    #endregion
+
     private void Awake()
     {
+        #region singleton
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -48,8 +67,16 @@ public class ClickManager : MonoBehaviour
         {
             Instance = this;
         }
+        #endregion
 
         _mainCamera = Camera.main;
+        _audioSource = GetComponentInChildren<AudioSource>();
+        //_audioSource.clip = _clickSound;
+
+        if (_clickEffect)
+        {
+            _clickFXInstance = Instantiate(_clickEffect, transform);
+        }
     }
 
     private void Update()
@@ -87,24 +114,18 @@ public class ClickManager : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetMouseButtonDown(0) && OnMouseClickDown != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            ClickedObjectsThisFrame.Clear();
-
-            OnMouseClickDown();
-
-            ClickableObject clickedObject = GetObjectInFront(ClickedObjectsThisFrame);
-
-            if (clickedObject != null)
+            if (OnMouseClickDown != null)
             {
-                clickedObject.onClickedDown.Invoke();
-
-                if (clickedObject.IsDraggable) StartDraggingObject(clickedObject);
+                TriggerClickDownEvent();
             }
 
-            if (draggedObject)
+            DoClickSound();
+
+            if (!draggedObject)
             {
-                _offset = draggedObject.transform.position - mousePosition;
+                DoClickEffect();
             }
         }
 
@@ -112,7 +133,7 @@ public class ClickManager : MonoBehaviour
         {
             if (!draggedObject)
             {
-                OnMouseClickHold?.Invoke();
+                TriggerClickHoldEvent();
             }
         }
 
@@ -124,9 +145,40 @@ public class ClickManager : MonoBehaviour
             }
             else
             {
-                OnMouseClickUp?.Invoke();
+                TriggerClickUpEvent();
             }
         }
+    }
+
+    private void TriggerClickDownEvent()
+    {
+        ClickedObjectsThisFrame.Clear();
+
+        OnMouseClickDown();
+
+        ClickableObject clickedObject = GetObjectInFront(ClickedObjectsThisFrame);
+
+        if (clickedObject != null)
+        {
+            clickedObject.onClickedDown.Invoke();
+
+            if (clickedObject.IsDraggable) StartDraggingObject(clickedObject);
+        }
+
+        if (draggedObject)
+        {
+            _offset = draggedObject.transform.position - mousePosition;
+        }
+    }
+
+    private void TriggerClickHoldEvent()
+    {
+        OnMouseClickHold?.Invoke();
+    }
+
+    private void TriggerClickUpEvent()
+    {
+        OnMouseClickUp?.Invoke();
     }
 
     /// <summary>
@@ -283,6 +335,25 @@ public class ClickManager : MonoBehaviour
         draggedObject.IsMoving = false;
         draggedObject.onDropped.Invoke();
         draggedObject = null;
+    }
+    
+    private void DoClickEffect()
+    {
+        if (_clickEffect == null) return;
+
+        Vector3 position = new Vector3(mousePosition.x, mousePosition.y, 0f);
+
+        _clickFXInstance.transform.position = position;
+        _clickFXInstance.Emit(1);
+        
+    }
+
+    private void DoClickSound()
+    {
+        if (_clickSound == null) return;
+
+        _audioSource.pitch = Random.Range(0.95f, 1.05f);
+        _audioSource.PlayOneShot(_clickSound);
     }
 
     /// <summary>
