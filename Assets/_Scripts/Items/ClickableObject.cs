@@ -68,6 +68,8 @@ public class ClickableObject : InteractableObject
 
     #region unserialized members
 
+    public bool IsLocked { get; private set; } = false;
+
     /// <summary>
     /// True si l'objet a été cliqué dans sa zone cliquable lors du dernier clic, revient à false au prochain relâchement de clic
     /// </summary>
@@ -118,17 +120,31 @@ public class ClickableObject : InteractableObject
 
     private void OnEnable()
     {
+        SubscribeEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeEvents();
+    }
+
+    #region events
+
+    private void SubscribeEvents()
+    {
         ClickManager.OnMouseClickDown += ClickDown;
         ClickManager.OnMouseClickHold += ClickHold;
         ClickManager.OnMouseClickUp += ClickUp;
     }
 
-    private void OnDisable()
+    private void UnsubscribeEvents()
     {
         ClickManager.OnMouseClickDown -= ClickDown;
         ClickManager.OnMouseClickHold -= ClickHold;
         ClickManager.OnMouseClickUp -= ClickUp;
     }
+
+    #endregion
 
     /// <summary>
     /// Appelé lorsque le ClickManager détecte un clic de la souris
@@ -253,5 +269,17 @@ public class ClickableObject : InteractableObject
         {
             transform.position = targetPosition;
         }
+    }
+
+    public void Lock()
+    {
+        IsLocked = true;
+        UnsubscribeEvents();
+    }
+
+    public void Unlock()
+    {
+        IsLocked = false;
+        SubscribeEvents();
     }
 }

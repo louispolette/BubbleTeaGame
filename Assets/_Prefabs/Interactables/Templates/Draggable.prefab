@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2586211146285080762}
   - component: {fileID: 7267696951470960221}
   m_Layer: 0
-  m_Name: ClickableObject
+  m_Name: Draggable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boundsMode: 0
   _showClickableArea: 0
-  _isDraggable: 0
+  _isDraggable: 1
   clickUpMode: 0
   mustStayInAreaToHold: 1
   clickHoldMode: 0
