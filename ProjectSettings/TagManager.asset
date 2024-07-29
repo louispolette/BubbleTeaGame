@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Containers
+    uniqueID: 1437246687
+    locked: 0
   - name: Draggable Items
     uniqueID: 425974903
     locked: 0

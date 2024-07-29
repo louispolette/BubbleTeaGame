@@ -5,14 +5,14 @@ public class ClickManager : MonoBehaviour
 {
     #region serialized members
 
-    [Space]
+    [Header("Effects")]
 
     [Tooltip("Effet créé à la position de la souris lorsque le joueur clique")]
     [SerializeField] private ParticleSystem _clickEffect;
 
     [SerializeField] private AudioClip _clickSound;
 
-    [Space]
+    [Header("Movement Detection")]
 
     [Tooltip("Fréquence en secondes de la détection de mouvement des objets tirés\n\nPlus cette valeur est petite, plus la détection de mouvement sera sensible")]
     [SerializeField] private float _moveDetectionTimestep = 0.05f;
@@ -44,6 +44,12 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     public static event MouseClickUp OnMouseClickUp;
 
+    public delegate void ReleaseObject();
+    /// <summary>
+    /// Invoqué lorsque un objet est relâché
+    /// </summary>
+    public static event ReleaseObject OnReleaseObject;
+
     private Vector3 _offset;
     private bool _isDraggingObject;
     private float _moveDetectionTimer;
@@ -71,7 +77,7 @@ public class ClickManager : MonoBehaviour
 
         _mainCamera = Camera.main;
         _audioSource = GetComponentInChildren<AudioSource>();
-        //_audioSource.clip = _clickSound;
+        _audioSource.clip = _clickSound;
 
         if (_clickEffect)
         {
@@ -83,7 +89,8 @@ public class ClickManager : MonoBehaviour
     {
         // Get mouse position
 
-        mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 screenToWorldPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = new Vector3(screenToWorldPos.x, screenToWorldPos.y, 0f);
 
         // Get input & send events
 
@@ -334,6 +341,9 @@ public class ClickManager : MonoBehaviour
         draggedObject.IsBeingDragged = false;
         draggedObject.IsMoving = false;
         draggedObject.onDropped.Invoke();
+
+        OnReleaseObject?.Invoke();
+
         draggedObject = null;
     }
     
@@ -341,11 +351,8 @@ public class ClickManager : MonoBehaviour
     {
         if (_clickEffect == null) return;
 
-        Vector3 position = new Vector3(mousePosition.x, mousePosition.y, 0f);
-
-        _clickFXInstance.transform.position = position;
+        _clickFXInstance.transform.position = mousePosition;
         _clickFXInstance.Emit(1);
-        
     }
 
     private void DoClickSound()

@@ -1,18 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ClickableObject : MonoBehaviour
+public class ClickableObject : InteractableObject
 {
     #region serialized members
 
-    [Space]
+    [Header("Dragging")]
 
     [SerializeField] private bool _isDraggable = false;
-
-    [Space]
-
-    [Tooltip("La méthode utilisée pour définir la zone cliquable de l'objet")]
-    [SerializeField] ClickAreaMode clickAreaMode = ClickAreaMode.useRenderer;
 
     [Header("Event Settings")]
 
@@ -69,10 +64,6 @@ public class ClickableObject : MonoBehaviour
 
     #endregion
 
-    [Header("Debug")]
-
-    [SerializeField] private bool _showClickableArea = false;
-
     #endregion
 
     #region unserialized members
@@ -85,8 +76,6 @@ public class ClickableObject : MonoBehaviour
     public bool IsBeingDragged { get; set; } = false;
     public Vector3 lastPosition { get; set; }
 
-    public Renderer _renderer { get; private set; }
-    public Collider2D _collider { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
 
     private bool isMoving = false;
@@ -98,11 +87,6 @@ public class ClickableObject : MonoBehaviour
     #endregion
 
     #region enums
-    public enum ClickAreaMode
-    {
-        useRenderer,
-        useCollider
-    }
 
     public enum ClickUpMode
     {
@@ -126,10 +110,9 @@ public class ClickableObject : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    protected override void Awake()
     {
-        _renderer = GetComponentInChildren<Renderer>();
-        _collider = GetComponentInChildren<Collider2D>();
+        base.Awake();
         Rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -158,13 +141,6 @@ public class ClickableObject : MonoBehaviour
         mouseHasExitedArea = false;
 
         ClickManager.Instance.ClickedObjectsThisFrame.Add(this);
-
-/*        if (_isDraggable)
-        {
-            ClickManager.Instance.StartDraggingObject(this);
-        }
-
-        onClickedDown.Invoke();*/
     }
 
     /// <summary>
@@ -216,16 +192,6 @@ public class ClickableObject : MonoBehaviour
 
         HasBeenClickedInArea = false;
         mouseHasExitedArea = true;
-    }
-
-    /// <summary>
-    /// Vérifie si la souris est dans la zone cliquable de l'objet
-    /// </summary>
-    private bool CheckIfMouseInArea()
-    {
-        Bounds bounds = GetBounds();
-
-        return ClickManager.IsMouseInBounds(bounds);
     }
 
     public bool IsMoving
@@ -288,51 +254,4 @@ public class ClickableObject : MonoBehaviour
             transform.position = targetPosition;
         }
     }
-
-    /// <summary>
-    /// Retourne les limites du renderer ou du collider en fonction de ClickAreaMode
-    /// </summary>
-    /// <returns></returns>
-    private Bounds GetBounds()
-    {
-        switch (clickAreaMode)
-        {
-            case ClickAreaMode.useRenderer:
-                return _renderer.bounds;
-            case ClickAreaMode.useCollider:
-                return _collider.bounds;
-            default:
-                return new Bounds();
-        }
-    }
-
-    #region gizmos
-
-    private void OnDrawGizmosSelected()
-    {
-        if (_showClickableArea)
-        {
-            Gizmos.color = Color.white;
-
-            Bounds bounds = new Bounds();
-
-            switch (clickAreaMode)
-            {
-                case ClickAreaMode.useRenderer:
-                    Renderer renderer = GetComponentInChildren<Renderer>();
-                    if (!renderer) break;
-                    bounds = renderer.bounds;
-                    break;
-                case ClickAreaMode.useCollider:
-                    Collider2D collider = GetComponentInChildren<Collider2D>();
-                    if (!collider) break;
-                    bounds = collider.bounds;
-                    break;
-            }
-
-            Gizmos.DrawWireCube(bounds.center, bounds.size);
-        }
-    }
-
-    #endregion
 }
