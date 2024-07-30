@@ -299,7 +299,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8938329709698872635}
         m_TargetAssemblyTypeName: ObjectHolder, Assembly-CSharp
-        m_MethodName: SnapObject
+        m_MethodName: HoldObject
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -321,4 +321,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d09157825921c64a89c6cc19bcc372f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchor: {fileID: 7117433819080447767}
+  _anchor: {fileID: 7117433819080447767}
+  _lockGivenObjects: 0

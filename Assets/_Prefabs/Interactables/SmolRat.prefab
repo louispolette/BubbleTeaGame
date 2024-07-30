@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: _isDraggable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7267696951470960221, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
+      propertyPath: _centerOnDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7298693463886695298, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
       propertyPath: m_Name
       value: SmolRat

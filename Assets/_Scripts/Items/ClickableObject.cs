@@ -9,6 +9,9 @@ public class ClickableObject : InteractableObject
 
     [SerializeField] private bool _isDraggable = false;
 
+    [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
+    [SerializeField, ConditionalHide("_isDraggable", true)] private bool _centerOnDrag = false;
+
     [Header("Event Settings")]
 
     [Tooltip("Définit si onClickedUp() peut être déclenché même si la souris n'est pas sur la zone cliquable si l'objet a été cliqué au préalable")]
@@ -75,10 +78,12 @@ public class ClickableObject : InteractableObject
     /// </summary>
     public bool HasBeenClickedInArea { get; private set; } = false;
     public bool IsDraggable { get => _isDraggable; }
+    public bool CenterOnDrag { get => _centerOnDrag; }
     public bool IsBeingDragged { get; set; } = false;
     public Vector3 lastPosition { get; set; }
 
     public Rigidbody2D Rigidbody { get; private set; }
+    public ObjectHolder Holder { get; set; }
 
     private bool isMoving = false;
     /// <summary>
@@ -281,5 +286,10 @@ public class ClickableObject : InteractableObject
     {
         IsLocked = false;
         SubscribeEvents();
+    }
+
+    public void LeaveHolder()
+    {
+        Holder?.ReleaseContent();
     }
 }

@@ -174,7 +174,7 @@ public class ClickManager : MonoBehaviour
 
         if (draggedObject)
         {
-            _offset = draggedObject.transform.position - mousePosition;
+            _offset = (draggedObject.CenterOnDrag) ? Vector3.zero : draggedObject.transform.position - mousePosition;
         }
     }
 
@@ -325,7 +325,9 @@ public class ClickManager : MonoBehaviour
 
         newObject.IsBeingDragged = true;
         newObject.IsMoving = false;
+        newObject.LeaveHolder();
         newObject.onDraggedStart.Invoke();
+
         draggedObject = newObject;
     }
 
