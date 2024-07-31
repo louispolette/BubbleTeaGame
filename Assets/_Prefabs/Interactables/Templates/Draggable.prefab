@@ -132,6 +132,10 @@ MonoBehaviour:
   boundsMode: 0
   _showClickableArea: 0
   _isDraggable: 1
+  _centerOnDrag: 0
+  clickSFX: {fileID: 0}
+  dragStartSFX: {fileID: 0}
+  dropSFX: {fileID: 0}
   clickUpMode: 0
   mustStayInAreaToHold: 1
   clickHoldMode: 0

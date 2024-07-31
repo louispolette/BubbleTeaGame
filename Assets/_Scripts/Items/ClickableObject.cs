@@ -12,21 +12,32 @@ public class ClickableObject : InteractableObject
     [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
     [SerializeField, ConditionalHide("_isDraggable", true)] private bool _centerOnDrag = false;
 
+    [Header("SFX")]
+
+    [Tooltip("Clip audio joué lorsque l'objet est cliqué")]
+    [SerializeField, ConditionalHide("_isDraggable", true, inverse : true)] private AudioClip _clickSFX;
+
+    [Tooltip("Clip audio joué lorsque l'objet est attrapé")]
+    [SerializeField, ConditionalHide("_isDraggable", true)] private AudioClip _dragStartSFX;
+
+    [Tooltip("Clip audio joué lorsque l'objet est lâché")]
+    [SerializeField, ConditionalHide("_isDraggable", true)] private AudioClip _dropSFX;
+
     [Header("Event Settings")]
 
     [Tooltip("Définit si onClickedUp() peut être déclenché même si la souris n'est pas sur la zone cliquable si l'objet a été cliqué au préalable")]
-    [SerializeField] private ClickUpMode clickUpMode = ClickUpMode.Permissive;
+    [SerializeField] private ClickUpMode _clickUpMode = ClickUpMode.Permissive;
 
     [Space]
 
     [Tooltip("Définit si la souris doit rester sur la zone cliquable pour déclencher onClickHeld")]
-    [SerializeField] private bool mustStayInAreaToHold = true;
+    [SerializeField] private bool _mustStayInAreaToHold = true;
 
     [Tooltip("Définit si le joueur doit d'abord cliquer sur la zone cliquable ou non pour pouvoir déclencher onClickHeld()")]
-    [SerializeField] private ClickHoldMode clickHoldMode = ClickHoldMode.MustClickOnAreaFirst;
+    [SerializeField] private ClickHoldMode _clickHoldMode = ClickHoldMode.MustClickOnAreaFirst;
 
     [Tooltip("Permet de déclencher onClickedDown et/ou onClickedUp lorsque la souris sort et rentre de la zone cliquable tout en gardant le clic appuyé")]
-    [SerializeField] private HoldLeaveMode extraEventCalls = HoldLeaveMode.ClickDownAndClickUp;
+    [SerializeField] private HoldLeaveMode _extraEventCalls = HoldLeaveMode.ClickDownAndClickUp;
 
     #region events
 
@@ -79,6 +90,9 @@ public class ClickableObject : InteractableObject
     public bool HasBeenClickedInArea { get; private set; } = false;
     public bool IsDraggable { get => _isDraggable; }
     public bool CenterOnDrag { get => _centerOnDrag; }
+    public AudioClip ClickSFX { get => _clickSFX; }
+    public AudioClip DragStartSFX { get => _dragStartSFX; }
+    public AudioClip DropSFX { get => _dropSFX; }
     public bool IsBeingDragged { get; set; } = false;
     public Vector3 lastPosition { get; set; }
 
@@ -169,11 +183,11 @@ public class ClickableObject : InteractableObject
     /// </summary>
     private void ClickHold()
     {
-        if (clickHoldMode == ClickHoldMode.MustClickOnAreaFirst && !HasBeenClickedInArea) return;
+        if (_clickHoldMode == ClickHoldMode.MustClickOnAreaFirst && !HasBeenClickedInArea) return;
 
         if (CheckIfMouseInArea())
         {
-            if (clickHoldMode == ClickHoldMode.Unrestricted)
+            if (_clickHoldMode == ClickHoldMode.Unrestricted)
             {
                 HasBeenClickedInArea = true;
             }
@@ -188,7 +202,7 @@ public class ClickableObject : InteractableObject
         }
         else if (HasBeenClickedInArea)
         {
-            if (!mustStayInAreaToHold)
+            if (!_mustStayInAreaToHold)
             {
                 onClickHeld.Invoke();
             }
@@ -206,7 +220,7 @@ public class ClickableObject : InteractableObject
     /// </summary>
     private void ClickUp()
     {
-        if (HasBeenClickedInArea && (CheckIfMouseInArea() || clickUpMode == ClickUpMode.Permissive))
+        if (HasBeenClickedInArea && (CheckIfMouseInArea() || _clickUpMode == ClickUpMode.Permissive))
         {
             onClickedUp.Invoke();
         }
@@ -243,7 +257,7 @@ public class ClickableObject : InteractableObject
     {
         get
         {
-            return extraEventCalls == HoldLeaveMode.ClickUpOnLeave || extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
+            return _extraEventCalls == HoldLeaveMode.ClickUpOnLeave || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
                    && !_isDraggable;
         }
     }
@@ -255,7 +269,7 @@ public class ClickableObject : InteractableObject
     {
         get
         {
-            return extraEventCalls == HoldLeaveMode.ClickDownOnEnter || extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
+            return _extraEventCalls == HoldLeaveMode.ClickDownOnEnter || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
                    && !_isDraggable;
         }
     }
@@ -274,6 +288,21 @@ public class ClickableObject : InteractableObject
         {
             transform.position = targetPosition;
         }
+    }
+
+    public void PlayClickSFX()
+    {
+        AudioManager.Instance.PlaySound(_clickSFX, 1f, 1f, 0.05f);
+    }
+
+    public void PlayDragStartSFX()
+    {
+        AudioManager.Instance.PlaySound(_dragStartSFX, 1f, 1f, 0.05f);
+    }
+
+    public void PlayDropSFX()
+    {
+        AudioManager.Instance.PlaySound(_dragStartSFX, 1f, 1f, 0.05f);
     }
 
     public void Lock()

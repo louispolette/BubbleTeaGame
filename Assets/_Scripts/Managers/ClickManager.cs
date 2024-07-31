@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ClickManager : MonoBehaviour
@@ -10,7 +11,11 @@ public class ClickManager : MonoBehaviour
     [Tooltip("Effet créé à la position de la souris lorsque le joueur clique")]
     [SerializeField] private ParticleSystem _clickEffect;
 
-    [SerializeField] private AudioClip _clickSound;
+    [Header("Sound")]
+
+    [SerializeField] private AudioClip _defaultClickSound;
+    [SerializeField] private AudioClip _defaultDragStartSound;
+    [SerializeField] private AudioClip _defaultDropSound;
 
     [Header("Movement Detection")]
 
@@ -53,10 +58,10 @@ public class ClickManager : MonoBehaviour
     private Vector3 _offset;
     private bool _isDraggingObject;
     private float _moveDetectionTimer;
+    private bool _clickSoundOverriden = false;
 
     private Camera _mainCamera;
     private ParticleSystem _clickFXInstance;
-    private AudioSource _audioSource;
 
     public List<ClickableObject> ClickedObjectsThisFrame { get; set; } = new List<ClickableObject>();
 
@@ -76,8 +81,6 @@ public class ClickManager : MonoBehaviour
         #endregion
 
         _mainCamera = Camera.main;
-        _audioSource = GetComponentInChildren<AudioSource>();
-        _audioSource.clip = _clickSound;
 
         if (_clickEffect)
         {
@@ -123,25 +126,18 @@ public class ClickManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (OnMouseClickDown != null)
-            {
-                TriggerClickDownEvent();
-            }
+            _clickSoundOverriden = false;
 
-            DoClickSound();
+            if (OnMouseClickDown != null) TriggerClickDownEvent();
 
-            if (!draggedObject)
-            {
-                DoClickEffect();
-            }
+            if (!_clickSoundOverriden) DoClickSound();
+
+            if (!draggedObject) DoClickEffect();
         }
 
         if (Input.GetMouseButton(0))
         {
-            if (!draggedObject)
-            {
-                TriggerClickHoldEvent();
-            }
+            if (!draggedObject) TriggerClickHoldEvent();
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -169,7 +165,15 @@ public class ClickManager : MonoBehaviour
         {
             clickedObject.onClickedDown.Invoke();
 
-            if (clickedObject.IsDraggable) StartDraggingObject(clickedObject);
+            if (clickedObject.IsDraggable)
+            {
+                StartDraggingObject(clickedObject);
+            }
+            else if (clickedObject.ClickSFX != null)
+            {
+                clickedObject.PlayClickSFX();
+                _clickSoundOverriden = true;
+            }
         }
 
         if (draggedObject)
@@ -325,6 +329,17 @@ public class ClickManager : MonoBehaviour
 
         newObject.IsBeingDragged = true;
         newObject.IsMoving = false;
+
+        if (newObject.DragStartSFX != null)
+        {
+            newObject.PlayDragStartSFX();
+            _clickSoundOverriden = true;
+        }
+        else
+        {
+            DoDragStartSound();
+        }
+
         newObject.LeaveHolder();
         newObject.onDraggedStart.Invoke();
 
@@ -342,6 +357,16 @@ public class ClickManager : MonoBehaviour
 
         draggedObject.IsBeingDragged = false;
         draggedObject.IsMoving = false;
+
+        if (draggedObject.DragStartSFX != null)
+        {
+            draggedObject.PlayDropSFX();
+        }
+        else
+        {
+            DoDropSound();
+        }
+
         draggedObject.onDropped.Invoke();
 
         OnReleaseObject?.Invoke();
@@ -359,11 +384,24 @@ public class ClickManager : MonoBehaviour
 
     private void DoClickSound()
     {
-        if (_clickSound == null) return;
+        if (_defaultClickSound == null) return;
 
-        _audioSource.pitch = Random.Range(0.95f, 1.05f);
-        _audioSource.PlayOneShot(_clickSound);
+        AudioManager.Instance.PlaySound(_defaultClickSound, 1f, 1f, 0.05f);
     }
+    private void DoDragStartSound()
+    {
+        if (_defaultDragStartSound == null) return;
+
+        AudioManager.Instance.PlaySound(_defaultDragStartSound, 1f, 1f, 0.05f);
+    }
+
+    private void DoDropSound()
+    {
+        if (_defaultDropSound == null) return;
+
+        AudioManager.Instance.PlaySound(_defaultDropSound, 1f, 1f, 0.05f);
+    }
+
 
     /// <summary>
     /// Vérifie si la position de la souris est dans les limites définies
