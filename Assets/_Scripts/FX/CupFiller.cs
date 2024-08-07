@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class CupFill : MonoBehaviour
+public class CupFiller : MonoBehaviour
 {
     [Space]
 
@@ -20,11 +19,13 @@ public class CupFill : MonoBehaviour
 
     [SerializeField] private bool _updateEveryFrame = false;
 
-    private bool _renderersEnabled;
+    private bool _renderersEnabled = true;
+
+    public float FillRatio => _fillRatio;
 
     private void Awake()
     {
-        _renderersEnabled = _fillRatio > 0f;
+        CheckIfEmpty();
     }
 
     private void Update()
@@ -56,6 +57,13 @@ public class CupFill : MonoBehaviour
         }
     }
 
+    [ContextMenu("Update")]
+    private void UpdateAndCheck()
+    {
+        UpdateObjects();
+        CheckIfEmpty();
+    }
+
     private void CheckIfEmpty()
     {
         if (_fillRatio > 0f)
@@ -64,7 +72,6 @@ public class CupFill : MonoBehaviour
         }
         else
         {
-            Debug.Log("Disable");
             DisableRenderers();
         }
     }

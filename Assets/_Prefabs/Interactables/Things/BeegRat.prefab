@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 8856151703652557884, guid: e6f136e51de6daa468e25e8b455dd678, type: 3}
     - target: {fileID: 3296081096866938719, guid: f4ec96e1c84a3fa43a26debf2ebe2166, type: 3}
       propertyPath: m_Name
-      value: ObjectDispenser Variant
+      value: BeegRat
       objectReference: {fileID: 0}
     - target: {fileID: 5140865870549962395, guid: f4ec96e1c84a3fa43a26debf2ebe2166, type: 3}
       propertyPath: m_LocalPosition.x
@@ -83,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 5309444900112463532, guid: f4ec96e1c84a3fa43a26debf2ebe2166, type: 3}
       propertyPath: mustStayInAreaToHold
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5309444900112463532, guid: f4ec96e1c84a3fa43a26debf2ebe2166, type: 3}
+      propertyPath: onClickedDown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/UXML/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-shrink: 1; justify-content: flex-start; align-items: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; transform-origin: center; translate: 0 0;">
+        <ui:VisualElement name="Container" class="container">
+            <ui:Label tabindex="-1" text="Dragging" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="-unity-font-style: bold; font-size: 24px; -unity-text-align: middle-left; white-space: nowrap; text-overflow: clip; width: 111px; align-self: auto; justify-content: flex-start; align-items: auto; flex-direction: column; visibility: visible; display: flex; position: relative; -unity-text-outline-width: 1px;" />
+            <uie:PropertyField binding-path="_isDraggable" class="bool" />
+            <uie:PropertyField binding-path="_centerOnDrag" class="bool" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

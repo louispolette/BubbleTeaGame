@@ -5,14 +5,10 @@ public class ClickableObject : InteractableObject
 {
     #region serialized members
 
-    [Header("Dragging")]
-
     [SerializeField] private bool _isDraggable = false;
 
     [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
-    [SerializeField, ConditionalHide("_isDraggable", true)] private bool _centerOnDrag = false;
-
-    [Header("SFX")]
+    [SerializeField] private bool _centerOnDrag = false;
 
     [Tooltip("Clip audio joué lorsque l'objet est cliqué")]
     [SerializeField, ConditionalHide("_isDraggable", true, inverse : true)] private AudioClip _clickSFX;

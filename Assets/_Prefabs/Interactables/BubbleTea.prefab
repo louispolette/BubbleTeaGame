@@ -598,15 +598,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778c188c0c8f6f44fa2dec9ceb478134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fillRatio: 1
-  objectsToScale:
+  _fillRatio: 1
+  _objectsToScale:
   - objectTransform: {fileID: 78802375062859604}
     affectPosition: 1
     emptyPosition: {x: 0, y: -1.45}
     fullPosition: {x: 0, y: 1.3}
     affectScale: 1
-    emptyScale: {x: 0.7, y: 0.7}
+    emptyScale: {x: 0.7, y: 0.65}
     fullScale: {x: 1, y: 1}
+  _renderersToHide:
+  - {fileID: 3536498698148584405}
+  - {fileID: 2831694732331487843}
+  _updateEveryFrame: 0
 --- !u!1 &6329202140515029234
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1866020124079055881}
   - component: {fileID: 8567053068184193678}
+  - component: {fileID: 8929979631202886005}
   m_Layer: 0
   m_Name: BubbleTea
   m_TagString: Untagged
@@ -652,6 +657,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3561f75f5574940bbe278ea12467ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fillSpeed: 1
+--- !u!114 &8929979631202886005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329202140515029234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boundsMode: 0
+  _renderer: {fileID: 4113381766426174781}
+  _sortingGroup: {fileID: 1788925962929272721}
+  _collider: {fileID: 0}
+  _showClickableArea: 1
+  _isDraggable: 0
+  _centerOnDrag: 0
+  _clickSFX: {fileID: 0}
+  _dragStartSFX: {fileID: 0}
+  _dropSFX: {fileID: 0}
+  _clickUpMode: 0
+  _mustStayInAreaToHold: 1
+  _clickHoldMode: 0
+  _extraEventCalls: 0
+  onClickedDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onClickedUp:
+    m_PersistentCalls:
+      m_Calls: []
+  onClickHeld:
+    m_PersistentCalls:
+      m_Calls: []
+  onDraggedStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onDragged:
+    m_PersistentCalls:
+      m_Calls: []
+  onDropped:
+    m_PersistentCalls:
+      m_Calls: []
+  onMovedStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onMoved:
+    m_PersistentCalls:
+      m_Calls: []
+  onMovedStop:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6363127821783167410
 GameObject:
   m_ObjectHideFlags: 0

@@ -226,8 +226,8 @@ public class ClickManager : MonoBehaviour
                 {
                     // If they're also the same, we compare their y positions
 
-                    float currentRendererPosition = clickedObjects[i]._renderer.transform.position.y;
-                    float objectInFrontRendererPosition = objectInFront._renderer.transform.position.y;
+                    float currentRendererPosition = clickedObjects[i].Renderer.transform.position.y;
+                    float objectInFrontRendererPosition = objectInFront.Renderer.transform.position.y;
 
                     if (currentRendererPosition < objectInFrontRendererPosition)
                     {
@@ -240,8 +240,9 @@ public class ClickManager : MonoBehaviour
 
             Comparison CompareSortingLayers()
             {
-                int currentObjectLayerVal = SortingLayer.GetLayerValueFromID(clickedObjects[i]._renderer.sortingLayerID);
-                int objectInFrontLayerVal = SortingLayer.GetLayerValueFromID(objectInFront._renderer.sortingLayerID);
+
+                int currentObjectLayerVal = clickedObjects[i].SortingLayerValue;
+                int objectInFrontLayerVal = objectInFront.SortingLayerValue;
 
                 if (currentObjectLayerVal > objectInFrontLayerVal)
                 {
@@ -259,8 +260,8 @@ public class ClickManager : MonoBehaviour
 
             Comparison CompareSortingOrders()
             {
-                int currentObjectSortOrder = clickedObjects[i]._renderer.sortingOrder;
-                int objectInFrontSortingOrder = objectInFront._renderer.sortingOrder;
+                int currentObjectSortOrder = clickedObjects[i].SortingOrder;
+                int objectInFrontSortingOrder = objectInFront.SortingOrder;
 
                 if (currentObjectSortOrder > objectInFrontSortingOrder)
                 {

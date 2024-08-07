@@ -422,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7267696951470960221, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
       propertyPath: onClickedDown.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7267696951470960221, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
       propertyPath: onClickedDown.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -542,7 +542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7298693463886695298, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
       propertyPath: m_Name
-      value: ClickableObject_2 (1) Variant
+      value: Goba
       objectReference: {fileID: 0}
     - target: {fileID: 9125052036565041663, guid: 8534f97751e710b468bfec50de96a30f, type: 3}
       propertyPath: m_Size.y

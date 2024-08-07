@@ -1,18 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BubbleTea : MonoBehaviour
+public class BubbleTea : CookableObject
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] float _fillSpeed = 1f;
+
+    private CupFiller _cupFiller;
+
+    private Coroutine _fillCoroutine;
+
+    private void Awake()
     {
-        
+        _cupFiller = GetComponentInChildren<CupFiller>();
     }
 
-    // Update is called once per frame
-    void Update()
+    [ContextMenu("Start Filling")]
+    public void StartFilling()
     {
-        
+        if (_fillCoroutine != null)
+        {
+            StopCoroutine(_fillCoroutine);
+        }
+
+        _fillCoroutine = StartCoroutine(FillCoroutine());
+    }
+
+    [ContextMenu("Stop Filling")]
+    public void StopFilling()
+    {
+        StopCoroutine(_fillCoroutine);
+    }
+
+    private IEnumerator FillCoroutine()
+    {
+        while (_cupFiller.FillRatio < 1f)
+        {
+            _cupFiller.SetFillRatio(_cupFiller.FillRatio + _fillSpeed * Time.deltaTime * 0.1f);
+            yield return null;
+        }
+
+        _cupFiller.SetFillRatio(1f);
     }
 }

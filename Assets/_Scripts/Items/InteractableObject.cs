@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public abstract class InteractableObject : MonoBehaviour
 {
@@ -6,16 +7,28 @@ public abstract class InteractableObject : MonoBehaviour
 
     [Tooltip("La méthode utilisée pour définir la zone cliquable de l'objet")]
     [SerializeField] protected BoundsMode boundsMode = BoundsMode.useRenderer;
+
+    [Space]
+
+    [SerializeField] private Renderer _renderer;
+    [SerializeField] private SortingGroup _sortingGroup;
+    [SerializeField] private Collider2D _collider;
+
+    [Space]
+
     [SerializeField] private bool _showClickableArea = false;
+
     public enum BoundsMode { useRenderer, useCollider };
 
-    public Renderer _renderer { get; private set; }
-    public Collider2D _collider { get; private set; }
+    public Renderer Renderer => _renderer;
+    public SortingGroup SortingGroup => _sortingGroup;
+    public Collider2D Collider => _collider;
 
     protected virtual void Awake()
     {
-        _renderer = GetComponentInChildren<Renderer>();
-        _collider = GetComponentInChildren<Collider2D>();
+        _renderer ??= GetComponentInChildren<Renderer>();
+        _sortingGroup ??= GetComponentInChildren<SortingGroup>();
+        _collider ??= GetComponentInChildren<Collider2D>();
     }
 
     /// <summary>
@@ -27,11 +40,41 @@ public abstract class InteractableObject : MonoBehaviour
         switch (boundsMode)
         {
             case BoundsMode.useRenderer:
-                return _renderer.bounds;
+                return Renderer.bounds;
             case BoundsMode.useCollider:
-                return _collider.bounds;
+                return Collider.bounds;
             default:
                 return new Bounds();
+        }
+    }
+
+    public int SortingLayerValue
+    {
+        get
+        {
+            if (SortingGroup != null)
+            {
+                return SortingLayer.GetLayerValueFromID(_sortingGroup.sortingLayerID);
+            }
+            else
+            {
+                return SortingLayer.GetLayerValueFromID(_renderer.sortingLayerID);
+            }
+        }
+    }
+
+    public int SortingOrder
+    {
+        get
+        {
+            if (_sortingGroup != null)
+            {
+                return _sortingGroup.sortingOrder;
+            }
+            else
+            {
+                return _renderer.sortingOrder;
+            }
         }
     }
 
