@@ -5,6 +5,8 @@ public class ClickableObject : InteractableObject
 {
     #region serialized members
 
+    [Header("Dragging")]
+
     [SerializeField] private bool _isDraggable = false;
 
     [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
@@ -303,12 +305,16 @@ public class ClickableObject : InteractableObject
 
     public void Lock()
     {
+        if (IsLocked) return;
+
         IsLocked = true;
         UnsubscribeEvents();
     }
 
     public void Unlock()
     {
+        if (!IsLocked) return;
+
         IsLocked = false;
         SubscribeEvents();
     }

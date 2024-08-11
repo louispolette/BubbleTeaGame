@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BubbleTea : CookableObject
 {
+    [Space]
+
     [SerializeField] float _fillSpeed = 1f;
 
     private CupFiller _cupFiller;
@@ -13,6 +15,19 @@ public class BubbleTea : CookableObject
     {
         _cupFiller = GetComponentInChildren<CupFiller>();
     }
+
+    public override void HandleObject(ClickableObject obj)
+    {
+        if (obj.TryGetComponent(out Ingredient ingredient))
+        {
+            if (ingredient.IngredientTarget == Ingredient.IngredientTargetMode.bubbleTea)
+            {
+                AddIngredient(ingredient);
+            }
+        }
+    }
+
+    #region filling
 
     [ContextMenu("Start Filling")]
     public void StartFilling()
@@ -41,4 +56,6 @@ public class BubbleTea : CookableObject
 
         _cupFiller.SetFillRatio(1f);
     }
+
+    #endregion
 }
