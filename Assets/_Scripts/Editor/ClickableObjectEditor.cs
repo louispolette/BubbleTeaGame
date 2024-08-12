@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-#if false
+#if true
 
 [CustomEditor(typeof(ClickableObject))]
 public class ClickableObjectEditor : Editor
@@ -13,7 +13,7 @@ public class ClickableObjectEditor : Editor
     private PropertyField _isDraggableToggle;
     private SerializedProperty _isDraggableProperty;
     
-    public string[] _isdraggableHiddenPropertiesNames =
+    public string[] _isDraggableHiddenPropertiesNames =
     {
         "CenterOnDrag"
     };
@@ -39,7 +39,8 @@ public class ClickableObjectEditor : Editor
         _isDraggableToggle.RegisterCallback<ChangeEvent<bool>>(OnDraggableChanged);
 
         _isDraggableHiddenProperties.Clear();
-        foreach (string propertyName in _isdraggableHiddenPropertiesNames)
+
+        foreach (string propertyName in _isDraggableHiddenPropertiesNames)
         {
             _isDraggableHiddenProperties.Add(root.Q<PropertyField>(propertyName));
         }

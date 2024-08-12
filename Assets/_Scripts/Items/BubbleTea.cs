@@ -1,3 +1,4 @@
+using GD.MinMaxSlider;
 using System.Collections;
 using UnityEngine;
 

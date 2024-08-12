@@ -5,7 +5,7 @@ public class ClickableObject : InteractableObject
 {
     #region serialized members
 
-    [Header("Dragging")]
+    //[Header("Dragging")]
 
     [SerializeField] private bool _isDraggable = false;
 
@@ -21,7 +21,7 @@ public class ClickableObject : InteractableObject
     [Tooltip("Clip audio joué lorsque l'objet est lâché")]
     [SerializeField, ConditionalHide("_isDraggable", true)] private AudioClip _dropSFX;
 
-    [Header("Event Settings")]
+    //[Header("Event Settings")]
 
     [Tooltip("Définit si onClickedUp() peut être déclenché même si la souris n'est pas sur la zone cliquable si l'objet a été cliqué au préalable")]
     [SerializeField] private ClickUpMode _clickUpMode = ClickUpMode.Permissive;

@@ -1,18 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/UXML/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
-    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-shrink: 1; justify-content: flex-start; align-items: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; transform-origin: center; translate: 0 0; align-self: stretch;">
-        <ui:VisualElement name="Row" style="flex-direction: row; flex-wrap: wrap; width: 459px; align-self: flex-start; justify-content: flex-start; align-items: stretch;">
-            <ui:VisualElement name="Dragging" class="container" style="flex-direction: column;">
-                <ui:Label tabindex="-1" text="Dragging" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="header" />
-                <uie:PropertyField binding-path="_isDraggable" name="IsDraggable" class="bool" />
-                <uie:PropertyField binding-path="_centerOnDrag" name="CenterOnDrag" tooltip="Définit si l&apos;objet peut être tiré ou non" class="bool" />
-            </ui:VisualElement>
-            <ui:VisualElement name="Audio" class="container">
-                <ui:Label tabindex="-1" text="Audio" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="true" class="header" />
-                <uie:ObjectField label="Click" binding-path="_clickSFX" type="UnityEngine.AudioClip, UnityEngine.AudioModule" tabindex="0" class="object" />
-                <uie:ObjectField label="Drag Start" binding-path="_dragStartSFX" type="UnityEngine.AudioClip, UnityEngine.AudioModule" class="object" />
-                <uie:ObjectField label="Drop" binding-path="_dropSFX" type="UnityEngine.AudioClip, UnityEngine.AudioModule" class="object" />
-            </ui:VisualElement>
-        </ui:VisualElement>
+    <ui:VisualElement name="MainSettings" class="container">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+        <uie:PropertyField name="IsDraggable" binding-path="_isDraggable" class="property bool" />
+        <uie:PropertyField name="CenterOnDrag" binding-path="_centerOnDrag" focusable="false" class="property bool" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Events" style="flex-grow: 1;">
+        <ui:VisualElement name="ClickEvents" style="flex-grow: 1;" />
+        <ui:VisualElement name="DragEvents" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>
