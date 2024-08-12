@@ -1,5 +1,5 @@
 .container {
-    background-color: var(--unity-colors-default-background);
+    background-color: rgb(48, 48, 48);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -14,11 +14,26 @@
     padding-left: 10px;
 }
 
+.header {
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
 .property {
 }
 
-.header {
+.property > .bool {
 }
 
-.property > .bool {
+.property > .object {
+}
+
+.property > .event {
+}
+
+.property > .enum {
+}
+
+.foldout {
+    margin-left: 10px;
 }

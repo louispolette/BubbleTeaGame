@@ -10,15 +10,21 @@ public class ClickableObjectEditor : Editor
 {
     public VisualTreeAsset _visualTree;
 
-    private PropertyField _isDraggableToggle;
+    private PropertyField _isDraggableVisual;
     private SerializedProperty _isDraggableProperty;
-    
-    public string[] _isDraggableHiddenPropertiesNames =
+
+    public (string, bool)[] _isDraggableHideableVisualInfo =
     {
-        "CenterOnDrag"
+        ("CenterOnDrag", false),
+        ("IsDraggableAdvancedSettings", true),
+        ("Click", true),
+        ("DragStart", false),
+        ("Drop", false),
+        ("ClickEvents", true),
+        ("DragAndMoveEvents", false)
     };
 
-    private List<VisualElement> _isDraggableHiddenProperties = new List<VisualElement>();
+    private List<VisualElement> _isDraggableHideableVisuals = new List<VisualElement>();
 
     private void OnEnable()
     {
@@ -35,14 +41,15 @@ public class ClickableObjectEditor : Editor
 
         #endregion
 
-        _isDraggableToggle = root.Q<PropertyField>("IsDraggable");
-        _isDraggableToggle.RegisterCallback<ChangeEvent<bool>>(OnDraggableChanged);
+        _isDraggableVisual = root.Q<PropertyField>("IsDraggable");
+        _isDraggableVisual.RegisterCallback<ChangeEvent<bool>>(OnDraggableChanged);
 
-        _isDraggableHiddenProperties.Clear();
+        _isDraggableHideableVisuals.Clear();
 
-        foreach (string propertyName in _isDraggableHiddenPropertiesNames)
+        foreach ((string, bool) hideableVisualInfo in _isDraggableHideableVisualInfo)
         {
-            _isDraggableHiddenProperties.Add(root.Q<PropertyField>(propertyName));
+            VisualElement hideableVisualElement = root.Q<VisualElement>(hideableVisualInfo.Item1);
+            _isDraggableHideableVisuals.Add(hideableVisualElement);
         }
 
         CheckDraggableBool();
@@ -59,19 +66,21 @@ public class ClickableObjectEditor : Editor
     {
         if (_isDraggableProperty.boolValue)
         {
-            ToggleDisplay(_isDraggableHiddenProperties.ToArray(), true);
+            ToggleDisplay(_isDraggableHideableVisuals.ToArray(), true);
         }
         else
         {
-            ToggleDisplay(_isDraggableHiddenProperties.ToArray(), false);
+            ToggleDisplay(_isDraggableHideableVisuals.ToArray(), false);
         }
     }
 
     private void ToggleDisplay(VisualElement[] elements, bool displayBool)
     {
-        foreach (VisualElement element in elements)
+        for (int i = 0; i < elements.Length; i++)
         {
-            element.style.display = (displayBool) ? DisplayStyle.Flex : DisplayStyle.None;
+            bool inverse = _isDraggableHideableVisualInfo[i].Item2;
+
+            elements[i].style.display = (displayBool ^ inverse) ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }

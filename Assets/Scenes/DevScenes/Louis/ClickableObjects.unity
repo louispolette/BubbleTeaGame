@@ -298,9 +298,6 @@ MonoBehaviour:
   _showClickableArea: 0
   _isDraggable: 1
   _centerOnDrag: 0
-  _clickSFX: {fileID: 0}
-  _dragStartSFX: {fileID: 0}
-  _dropSFX: {fileID: 0}
   _clickUpMode: 0
   _mustStayInAreaToHold: 1
   _clickHoldMode: 0
@@ -332,6 +329,9 @@ MonoBehaviour:
   onMovedStop:
     m_PersistentCalls:
       m_Calls: []
+  _clickSFX: {fileID: 0}
+  _dragStartSFX: {fileID: 0}
+  _dropSFX: {fileID: 0}
 --- !u!4 &177438653
 Transform:
   m_ObjectHideFlags: 0
@@ -476,11 +476,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _isDraggable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _centerOnDrag
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onClickedUp.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onMovedStart.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onClickedDown.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onDraggedStart.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onClickedUp.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onMovedStart.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onClickedDown.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: onDraggedStart.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -630,9 +662,6 @@ MonoBehaviour:
   _showClickableArea: 0
   _isDraggable: 1
   _centerOnDrag: 0
-  _clickSFX: {fileID: 0}
-  _dragStartSFX: {fileID: 0}
-  _dropSFX: {fileID: 0}
   _clickUpMode: 0
   _mustStayInAreaToHold: 1
   _clickHoldMode: 0
@@ -664,6 +693,9 @@ MonoBehaviour:
   onMovedStop:
     m_PersistentCalls:
       m_Calls: []
+  _clickSFX: {fileID: 0}
+  _dragStartSFX: {fileID: 0}
+  _dropSFX: {fileID: 0}
 --- !u!114 &1116705986
 MonoBehaviour:
   m_ObjectHideFlags: 0

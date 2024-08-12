@@ -5,28 +5,13 @@ public class ClickableObject : InteractableObject
 {
     #region serialized members
 
-    //[Header("Dragging")]
-
     [SerializeField] private bool _isDraggable = false;
 
     [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
     [SerializeField] private bool _centerOnDrag = false;
 
-    [Tooltip("Clip audio joué lorsque l'objet est cliqué")]
-    [SerializeField, ConditionalHide("_isDraggable", true, inverse : true)] private AudioClip _clickSFX;
-
-    [Tooltip("Clip audio joué lorsque l'objet est attrapé")]
-    [SerializeField, ConditionalHide("_isDraggable", true)] private AudioClip _dragStartSFX;
-
-    [Tooltip("Clip audio joué lorsque l'objet est lâché")]
-    [SerializeField, ConditionalHide("_isDraggable", true)] private AudioClip _dropSFX;
-
-    //[Header("Event Settings")]
-
     [Tooltip("Définit si onClickedUp() peut être déclenché même si la souris n'est pas sur la zone cliquable si l'objet a été cliqué au préalable")]
     [SerializeField] private ClickUpMode _clickUpMode = ClickUpMode.Permissive;
-
-    [Space]
 
     [Tooltip("Définit si la souris doit rester sur la zone cliquable pour déclencher onClickHeld")]
     [SerializeField] private bool _mustStayInAreaToHold = true;
@@ -39,8 +24,6 @@ public class ClickableObject : InteractableObject
 
     #region events
 
-    [Header("Events")]
-
     [Tooltip("Fonctions appelées à chaque clic sur la zone cliquable de l'objet")]
     public UnityEvent onClickedDown;
 
@@ -50,31 +33,34 @@ public class ClickableObject : InteractableObject
     [Tooltip("Fonctions appelées chaque frame où le clic est maintenu sur l'objet")]
     public UnityEvent onClickHeld;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées quand l'objet commence à être tiré")]
     public UnityEvent onDraggedStart;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées chaque frame où l'objet est tiré")]
     public UnityEvent onDragged;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est relâché")]
     public UnityEvent onDropped;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est tiré et commence à se déplacer")]
     public UnityEvent onMovedStart;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées chaque frame où l'objet est tiré et se déplace")]
     public UnityEvent onMoved;
 
-    [ConditionalHide("_isDraggable", true)]
     [Tooltip("Fonctions appelées lorsque l'objet est tiré et arrête de se déplacer")]
     public UnityEvent onMovedStop;
 
     #endregion
+
+    [Tooltip("Clip audio joué lorsque l'objet est cliqué")]
+    [SerializeField] private AudioClip _clickSFX;
+
+    [Tooltip("Clip audio joué lorsque l'objet est attrapé")]
+    [SerializeField] private AudioClip _dragStartSFX;
+
+    [Tooltip("Clip audio joué lorsque l'objet est lâché")]
+    [SerializeField] private AudioClip _dropSFX;
 
     #endregion
 

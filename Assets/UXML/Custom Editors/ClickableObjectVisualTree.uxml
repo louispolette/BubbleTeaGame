@@ -1,12 +1,51 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/UXML/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
-    <ui:VisualElement name="MainSettings" class="container">
-        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
-        <uie:PropertyField name="IsDraggable" binding-path="_isDraggable" class="property bool" />
-        <uie:PropertyField name="CenterOnDrag" binding-path="_centerOnDrag" focusable="false" class="property bool" />
+    <ui:VisualElement name="DragSettings" class="container" style="flex-direction: column;">
+        <ui:VisualElement name="DragMainSettings" style="flex-grow: 1; margin-bottom: 10px;">
+            <ui:Label tabindex="-1" text="Drag Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+            <uie:PropertyField name="IsDraggable" binding-path="_isDraggable" class="property bool" />
+        </ui:VisualElement>
+        <ui:VisualElement name="DragAdvancedSettings">
+            <ui:Foldout text="Advanced Settings" name="Foldout" view-data-key="advancedSettingsFoldout" value="false" class="foldout">
+                <uie:PropertyField name="CenterOnDrag" binding-path="_centerOnDrag" focusable="false" class="property bool" />
+                <ui:VisualElement name="IsDraggableAdvancedSettings" style="flex-grow: 1;">
+                    <uie:PropertyField binding-path="_clickUpMode" name="ClickUpMode" class="property enum" />
+                    <uie:PropertyField binding-path="_mustStayInAreaToHold" name="MustStayInAreaToHold" class="property bool" />
+                    <uie:PropertyField binding-path="_clickHoldMode" name="ClickHoldMode" class="property enum" />
+                    <uie:PropertyField binding-path="_extraEventCalls" view-data-key="ExtraEventCalls" name="ExtraEventCalls" class="property enum" />
+                </ui:VisualElement>
+            </ui:Foldout>
+        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="Events" style="flex-grow: 1;">
-        <ui:VisualElement name="ClickEvents" style="flex-grow: 1;" />
-        <ui:VisualElement name="DragEvents" style="flex-grow: 1;" />
+        <ui:VisualElement name="ClickEvents" class="container" style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="Click Events" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+            <uie:PropertyField binding-path="onClickedDown" class="event" />
+            <uie:PropertyField binding-path="onClickedUp" class="event" />
+            <uie:PropertyField binding-path="onClickHeld" class="event" />
+        </ui:VisualElement>
+        <ui:VisualElement name="DragAndMoveEvents" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
+            <ui:VisualElement name="DragEvents" class="container" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Drag Events" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+                <uie:PropertyField binding-path="onDraggedStart" class="event" />
+                <uie:PropertyField binding-path="onDragged" class="event" />
+                <uie:PropertyField binding-path="onDropped" focusable="false" class="event" />
+            </ui:VisualElement>
+            <ui:VisualElement name="MoveEvents" class="container" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Move Events" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+                <uie:PropertyField binding-path="onMovedStart" class="event" />
+                <uie:PropertyField binding-path="onMoved" class="event" />
+                <uie:PropertyField binding-path="onMovedStop" focusable="false" class="event" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Audio" class="container" style="flex-grow: 1;">
+        <ui:VisualElement name="Header" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: stretch;">
+            <ui:Label tabindex="-1" text="Audio" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px; align-self: auto; -unity-text-align: upper-left; text-overflow: clip;" />
+            <ui:Label text="The clips defined in the ClickManager will be used if undefined" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" tabindex="-1" focusable="false" style="-unity-text-align: upper-left; opacity: 0.8; overflow: hidden; white-space: nowrap; flex-wrap: nowrap; margin-bottom: 10px;" />
+        </ui:VisualElement>
+        <uie:PropertyField name="Click" binding-path="_clickSFX" class="object" />
+        <uie:PropertyField name="DragStart" binding-path="_dragStartSFX" class="object" />
+        <uie:PropertyField name="Drop" binding-path="_dropSFX" class="object" />
     </ui:VisualElement>
 </ui:UXML>
