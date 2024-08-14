@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsMode: 0
+  _boundsMode: 0
   _renderer: {fileID: 1146605413}
   _sortingGroup: {fileID: 0}
   _collider: {fileID: 0}
@@ -454,6 +454,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BubbleTea
       objectReference: {fileID: 0}
+    - target: {fileID: 6329202140515029234, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8567053068184193678, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: test.x
       value: 30.468752
@@ -484,7 +488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _isDraggable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _centerOnDrag
@@ -695,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsMode: 0
+  _boundsMode: 0
   _renderer: {fileID: 839617069}
   _sortingGroup: {fileID: 0}
   _collider: {fileID: 0}

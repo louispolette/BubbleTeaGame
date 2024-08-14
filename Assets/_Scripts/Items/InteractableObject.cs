@@ -3,18 +3,14 @@ using UnityEngine.Rendering;
 
 public abstract class InteractableObject : MonoBehaviour
 {
-    [Header("Bounds")]
+    //[Header("Bounds")]
 
     [Tooltip("La méthode utilisée pour définir la zone cliquable de l'objet")]
-    [SerializeField] protected BoundsMode boundsMode = BoundsMode.useRenderer;
-
-    [Space]
+    [SerializeField] protected BoundsMode _boundsMode = BoundsMode.useRenderer;
 
     [SerializeField] private Renderer _renderer;
     [SerializeField] private SortingGroup _sortingGroup;
     [SerializeField] private Collider2D _collider;
-
-    [Space]
 
     [SerializeField] private bool _showClickableArea = false;
 
@@ -37,7 +33,7 @@ public abstract class InteractableObject : MonoBehaviour
     /// <returns></returns>
     public Bounds GetBounds()
     {
-        switch (boundsMode)
+        switch (_boundsMode)
         {
             case BoundsMode.useRenderer:
                 return Renderer.bounds;
@@ -103,7 +99,7 @@ public abstract class InteractableObject : MonoBehaviour
 
             Bounds bounds = new Bounds();
 
-            switch (boundsMode)
+            switch (_boundsMode)
             {
                 case BoundsMode.useRenderer:
                     Renderer renderer = GetComponentInChildren<Renderer>();
