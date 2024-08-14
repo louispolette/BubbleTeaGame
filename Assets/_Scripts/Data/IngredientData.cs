@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "IngredientData", menuName = "Data/Ingredient Database")]
+[CreateAssetMenu(fileName = "IngredientData", menuName = "Data/Ingredient Data")]
 [System.Serializable]
 public class IngredientData : ScriptableObject
 {
