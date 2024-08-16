@@ -1,27 +1,20 @@
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 #if false
 
-[CustomEditor(typeof(Component))]
-public class ComponentEditor : Editor
+[CustomEditor(typeof())]
+public class _CustomEditorTemplate : CustomEditorBase
 {
-    public VisualTreeAsset _visualTree;
 
-    private VisualElement root;
-
-    private void Initialize()
+    private void OnEnable()
     {
-        root = new VisualElement();
-        _visualTree.CloneTree(root);
+
     }
 
     public override VisualElement CreateInspectorGUI()
     {
-        Initialize();
-
-
+        VisualElement root = base.CreateInspectorGUI();
 
         return root;
     }

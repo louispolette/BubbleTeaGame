@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <ui:Template name="InteractableObjectVisualTree" src="project://database/Assets/UXML/Custom%20Editors/InteractableObjectVisualTree.uxml?fileID=9197481963319205126&amp;guid=adb3e8e7bd6f8ff41a20f55e4678cc0e&amp;type=3#InteractableObjectVisualTree" />
     <Style src="project://database/Assets/UXML/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
-    <ui:Instance template="InteractableObjectVisualTree" name="InteractableObjectEditor" />
+    <ui:Instance template="InteractableObjectVisualTree" name="InteractableObjectEditor" view-data-key="interactableObjectEditor" />
     <ui:VisualElement name="DragSettings" class="container" style="flex-direction: column;">
         <ui:VisualElement name="DragMainSettings" style="flex-grow: 1; margin-bottom: 10px;">
             <ui:Label tabindex="-1" text="Drag Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />

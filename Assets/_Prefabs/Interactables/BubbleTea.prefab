@@ -658,6 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3561f75f5574940bbe278ea12467ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _contents: []
   _fillSpeed: 2
 --- !u!114 &8929979631202886005
 MonoBehaviour:
@@ -671,16 +672,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsMode: 0
+  _boundsMode: 0
   _renderer: {fileID: 4113381766426174781}
   _sortingGroup: {fileID: 1788925962929272721}
   _collider: {fileID: 0}
-  _showClickableArea: 0
+  _showClickableArea: 1
   _isDraggable: 1
   _centerOnDrag: 0
-  _clickSFX: {fileID: 0}
-  _dragStartSFX: {fileID: 0}
-  _dropSFX: {fileID: 0}
   _clickUpMode: 0
   _mustStayInAreaToHold: 1
   _clickHoldMode: 0
@@ -712,6 +710,9 @@ MonoBehaviour:
   onMovedStop:
     m_PersistentCalls:
       m_Calls: []
+  _clickSFX: {fileID: 0}
+  _dragStartSFX: {fileID: 0}
+  _dropSFX: {fileID: 0}
 --- !u!114 &8415762986469442405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,7 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9f158932cc22d49bea2d1e98505a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsMode: 0
+  _boundsMode: 0
   _renderer: {fileID: 4113381766426174781}
   _sortingGroup: {fileID: 1788925962929272721}
   _collider: {fileID: 0}

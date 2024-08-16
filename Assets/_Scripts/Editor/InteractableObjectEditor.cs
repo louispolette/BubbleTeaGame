@@ -1,27 +1,29 @@
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 #if true
 
 [CustomEditor(typeof(InteractableObject))]
-public class InteractableObjectEditor : Editor
+public class InteractableObjectEditor : CustomEditorBase
 {
-    public VisualTreeAsset _visualTree;
 
-    private VisualElement root;
-
-    private void Initialize()
+    private (string, int)[] _boundsModeMask =
     {
-        root = new VisualElement();
-        _visualTree.CloneTree(root);
+        ("SortingGroup", (int)InteractableObject.BoundsMode.useRenderer),
+        ("SpriteRenderer", (int)InteractableObject.BoundsMode.useRenderer),
+        ("Collider", (int)InteractableObject.BoundsMode.useCollider)
+    };
+
+    private void OnEnable()
+    {
+        SerializedProperty boundsModeProperty = serializedObject.FindProperty("_boundsMode");
+
+        AddConditionalDisplay("BoundsMode", boundsModeProperty, _boundsModeMask);
     }
 
     public override VisualElement CreateInspectorGUI()
     {
-        Initialize();
-
-
+        VisualElement root = base.CreateInspectorGUI();
 
         return root;
     }

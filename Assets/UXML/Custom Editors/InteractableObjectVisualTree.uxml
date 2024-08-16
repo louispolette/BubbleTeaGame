@@ -6,5 +6,6 @@
         <uie:PropertyField name="SortingGroup" binding-path="_sortingGroup" class="object" />
         <uie:PropertyField name="SpriteRenderer" binding-path="_renderer" />
         <uie:PropertyField name="Collider" binding-path="_collider" />
+        <uie:PropertyField name="ShowArea" binding-path="_showClickableArea" style="margin-top: 10px;" />
     </ui:VisualElement>
 </ui:UXML>

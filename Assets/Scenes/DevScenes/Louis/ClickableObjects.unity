@@ -296,7 +296,7 @@ MonoBehaviour:
   _sortingGroup: {fileID: 0}
   _collider: {fileID: 0}
   _showClickableArea: 0
-  _isDraggable: 1
+  _isDraggable: 0
   _centerOnDrag: 0
   _clickUpMode: 0
   _mustStayInAreaToHold: 1
@@ -487,8 +487,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: _boundsMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _isDraggable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: _centerOnDrag
