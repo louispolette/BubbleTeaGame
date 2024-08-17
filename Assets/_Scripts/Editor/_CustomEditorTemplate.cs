@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 #if false
 
-[CustomEditor(typeof())]
+[CustomEditor(typeof(/*type*/), editorForChildClasses: /*bool*/)]
 public class _CustomEditorTemplate : CustomEditorBase
 {
 

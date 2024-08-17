@@ -1,11 +1,16 @@
+
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 #if true
 
-[CustomEditor(typeof(InteractableObject))]
+[CustomEditor(typeof(InteractableObject), editorForChildClasses: true)]
 public class InteractableObjectEditor : CustomEditorBase
 {
+    private string visualTreePath = "";
+
+    protected override string VisualTreePath => visualTreePath;
 
     private (string, int)[] _boundsModeMask =
     {

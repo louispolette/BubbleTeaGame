@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public abstract class CustomEditorBase : Editor
 {
-    public VisualTreeAsset _visualTree;
+    protected abstract string VisualTreePath { get; }
 
     private VisualElement _root;
 
@@ -42,7 +42,9 @@ public abstract class CustomEditorBase : Editor
     {
         _root = new VisualElement();
 
-        _visualTree.CloneTree(_root);
+        VisualTreeAsset visualTree = Resources.Load(VisualTreePath) as VisualTreeAsset;
+
+        visualTree.CloneTree(_root);
     }
 
     protected void AddConditionalDisplay(string sourceElementName, SerializedProperty sourceProperty, (string, int)[] elementMask)
