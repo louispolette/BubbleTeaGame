@@ -3,16 +3,33 @@ using UnityEditor.UIElements;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utils.AssetLoading;
 
 public abstract class CustomEditorBase : Editor
 {
-    protected abstract string VisualTreePath { get; }
+    protected VisualElement _root;
 
-    private VisualElement _root;
+    private VisualTreeAsset _visualTree;
+
+    protected VisualTreeAsset VisualTree
+    {
+        get
+        {
+            if (_visualTree == null)
+            {
+                VisualTreeAsset asset = AssetLoadingUtils.LoadVisualTreeAsset(VisualTreePath);
+                _visualTree = asset;
+            }
+
+            return _visualTree;
+        }
+    }
+
+    protected abstract string VisualTreePath { get; }
 
     protected List<ConditionalEditorDisplay> _conditionalEditorDisplays = new List<ConditionalEditorDisplay>();
 
-    public VisualElement Root
+    /*public VisualElement Root
     {
         get
         {
@@ -23,35 +40,28 @@ public abstract class CustomEditorBase : Editor
 
             return _root;
         }
-    }
+    }*/
 
     public override VisualElement CreateInspectorGUI()
     {
-        BuildTree();
+        if (_root == null) return null;
 
         foreach (ConditionalEditorDisplay conditionalDisplay in _conditionalEditorDisplays)
         {
-            conditionalDisplay.Root = this.Root;
+            conditionalDisplay.Root = this._root;
             conditionalDisplay.Update();
         }
 
-        return Root;
+        return _root;
     }
 
-    private void BuildTree()
-    {
-        _root = new VisualElement();
+    protected abstract void BuildTree();
 
-        VisualTreeAsset visualTree = Resources.Load(VisualTreePath) as VisualTreeAsset;
-
-        visualTree.CloneTree(_root);
-    }
-
-    protected void AddConditionalDisplay(string sourceElementName, SerializedProperty sourceProperty, (string, int)[] elementMask)
+    public void AddConditionalDisplay(string sourceElementName, SerializedProperty sourceProperty, (string, int)[] elementMask)
     {
         ConditionalEditorDisplay c;
 
-        c = new ConditionalEditorDisplay(Root, sourceElementName, sourceProperty, elementMask);
+        c = new ConditionalEditorDisplay(_root, sourceElementName, sourceProperty, elementMask);
 
         _conditionalEditorDisplays.Add(c);
     }

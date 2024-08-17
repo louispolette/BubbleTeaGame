@@ -487,6 +487,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: _showClickableArea
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979631202886005, guid: 141d8fee8107088469efe19723ff4819, type: 3}
       propertyPath: onMoved.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
