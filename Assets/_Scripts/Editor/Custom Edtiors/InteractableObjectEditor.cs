@@ -1,11 +1,10 @@
 
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 #if true
 
-[CustomEditor(typeof(InteractableObject), editorForChildClasses: true)]
+[CustomEditor(typeof(InteractableObject), editorForChildClasses: false)]
 public class InteractableObjectEditor : CustomEditorBase
 {
     private string _visualTreePath = "Custom Editors/InteractableObjectVisualTree";

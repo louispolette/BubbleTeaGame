@@ -204,13 +204,13 @@ public class ClickableObject : InteractableObject
     /// </summary>
     private void ClickUp()
     {
+        HasBeenClickedInArea = false;
+        mouseHasExitedArea = true;
+
         if (HasBeenClickedInArea && (CheckIfMouseInArea() || _clickUpMode == ClickUpMode.Permissive))
         {
             onClickedUp.Invoke();
         }
-
-        HasBeenClickedInArea = false;
-        mouseHasExitedArea = true;
     }
 
     public bool IsMoving

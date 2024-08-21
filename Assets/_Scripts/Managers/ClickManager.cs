@@ -142,13 +142,11 @@ public class ClickManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            TriggerClickUpEvent();
+
             if (draggedObject)
             {
                 StopDraggingObject();
-            }
-            else
-            {
-                TriggerClickUpEvent();
             }
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 #if true
 
+[CanEditMultipleObjects]
 [CustomEditor(typeof(ClickableObject))]
 public class ClickableObjectEditor : CustomEditorBase
 {
@@ -32,7 +33,7 @@ public class ClickableObjectEditor : CustomEditorBase
 
     private void OnEnable()
     {
-        ClickableObjectEditor.SetCallbacks(this);
+        SetCallbacks(this);
         InteractableObjectEditor.SetCallbacks(this);
     }
 

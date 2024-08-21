@@ -3,13 +3,13 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-#if false
+#if true
 
 [CanEditMultipleObjects]
-[CustomEditor(typeof())]
-public class _CustomEditorTemplate : CustomEditorBase
+[CustomEditor(typeof(ObjectReceptor))]
+public class ObjectReceptorEditor : CustomEditorBase
 {
-    private string _visualTreePath = "Custom Editors/ClickableObjectVisualTree";
+    private string _visualTreePath = "Custom Editors/ObjectReceptorVisualTree";
 
     protected override string VisualTreePath => _visualTreePath;
 
@@ -21,6 +21,7 @@ public class _CustomEditorTemplate : CustomEditorBase
     private void OnEnable()
     {
         SetCallbacks(this);
+        InteractableObjectEditor.SetCallbacks(this);
     }
 
 

@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class ObjectReceptor : InteractableObject
 {
-    [Header("Events")]
     [Tooltip("Action à effectuer lorsqu'un objet est reçu")]
     public UnityEvent<ClickableObject> onObjectReceived;
 
