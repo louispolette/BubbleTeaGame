@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/UXML/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
+    <Style src="project://database/Assets/UXML/Resources/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
     <ui:VisualElement class="container" style="flex-grow: 1;">
         <ui:Label tabindex="-1" text="Bounds" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" />
         <uie:PropertyField name="BoundsMode" binding-path="_boundsMode" class="enum" style="margin-bottom: 10px;" />
         <uie:PropertyField name="SortingGroup" binding-path="_sortingGroup" class="object" />
         <uie:PropertyField name="SpriteRenderer" binding-path="_renderer" />
         <uie:PropertyField name="Collider" binding-path="_collider" />
-        <uie:PropertyField name="ShowArea" binding-path="_showClickableArea" style="margin-top: 10px;" />
+        <uie:PropertyField name="ShowArea" binding-path="_showArea" style="margin-top: 10px;" />
     </ui:VisualElement>
 </ui:UXML>

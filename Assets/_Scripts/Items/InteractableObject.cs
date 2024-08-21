@@ -12,7 +12,7 @@ public abstract class InteractableObject : MonoBehaviour
     [SerializeField] private SortingGroup _sortingGroup;
     [SerializeField] private Collider2D _collider;
 
-    [SerializeField] private bool _showClickableArea = false;
+    [SerializeField] private bool _showArea = false;
 
     public enum BoundsMode { useRenderer, useCollider };
 
@@ -22,9 +22,9 @@ public abstract class InteractableObject : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _renderer ??= GetComponentInChildren<Renderer>();
-        _sortingGroup ??= GetComponentInChildren<SortingGroup>();
-        _collider ??= GetComponentInChildren<Collider2D>();
+        _renderer = GetComponentInChildren<Renderer>();
+        _sortingGroup = GetComponentInChildren<SortingGroup>();
+        _collider = GetComponentInChildren<Collider2D>();
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public abstract class InteractableObject : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (_showClickableArea)
+        if (_showArea)
         {
             Gizmos.color = Color.white;
 

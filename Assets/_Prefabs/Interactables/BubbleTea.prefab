@@ -672,11 +672,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6fd50388e2f7543833ad99dd2b2506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boundsMode: 0
+  _boundsMode: 1
   _renderer: {fileID: 4113381766426174781}
   _sortingGroup: {fileID: 1788925962929272721}
   _collider: {fileID: 0}
-  _showClickableArea: 1
+  _showArea: 0
   _isDraggable: 1
   _centerOnDrag: 0
   _clickUpMode: 0
@@ -729,7 +729,7 @@ MonoBehaviour:
   _renderer: {fileID: 4113381766426174781}
   _sortingGroup: {fileID: 1788925962929272721}
   _collider: {fileID: 0}
-  _showClickableArea: 0
+  _showArea: 0
   onObjectReceived:
     m_PersistentCalls:
       m_Calls:
