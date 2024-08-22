@@ -10,7 +10,7 @@ public class ObjectHolder : MonoBehaviour
 
     [SerializeField] private bool _lockGivenObjects = false;
 
-    public ClickableObject ContainedObject {  get; private set; }
+    public ClickableObject ContainedObject { get; private set; }
 
     public void HoldObject(ClickableObject obj)
     {

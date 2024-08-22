@@ -98,11 +98,8 @@ public class ClickableObject : InteractableObject
     /// </summary>
     private bool _mouseHasExitedArea = true;
 
-    private bool _disableReturning = false;
-
     private Vector3 _restingPosition;
     private Coroutine _returnCoroutine;
-    private bool _isReturning = false;
 
     #endregion
 
@@ -220,15 +217,18 @@ public class ClickableObject : InteractableObject
     /// </summary>
     private void ClickUp()
     {
-        HasBeenClickedInArea = false;
-        _mouseHasExitedArea = true;
-
         if (HasBeenClickedInArea && (CheckIfMouseInArea() || _clickUpMode == ClickUpMode.Permissive))
         {
             onClickedUp.Invoke();
+
+            if (_returnToRestingPosition)
+            {
+                ReturnToRestingPosition();
+            }
         }
-        
-        ReturnToRestingPosition();
+
+        HasBeenClickedInArea = false;
+        _mouseHasExitedArea = true;
     }
 
     public bool IsMoving
@@ -269,7 +269,6 @@ public class ClickableObject : InteractableObject
         if (_returnCoroutine != null)
         {
             StopCoroutine(_returnCoroutine);
-            _isReturning = false;
         }
 
         StartCoroutine(ReturnCoroutine(_returnDuration * durationMultiplier));
@@ -329,8 +328,6 @@ public class ClickableObject : InteractableObject
 
     private IEnumerator ReturnCoroutine(float duration)
     {
-        _isReturning = true;
-
         Lock();
         Vector3 initialPos = transform.position;
         float elapsedTime = 0f;
@@ -345,7 +342,5 @@ public class ClickableObject : InteractableObject
 
         transform.position = _restingPosition;
         Unlock();
-
-        _isReturning = false;
     }
 }

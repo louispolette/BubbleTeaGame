@@ -291,6 +291,14 @@ MonoBehaviour:
   _collider: {fileID: 4468508707765701126}
   _showArea: 0
   _isDraggable: 0
+  _returnToRestingPosition: 0
+  _returnDuration: 0.75
+  _returnCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _centerOnDrag: 0
   _clickUpMode: 0
   _mustStayInAreaToHold: 1

@@ -174,5 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _clickEffect: {fileID: 6906947536004287837, guid: 17870de6a6e89b844a0d1873641ff062, type: 3}
-  _clickSound: {fileID: 8300000, guid: 093fe452f5f7fe64e921cfc415e0f073, type: 3}
+  _defaultClickSound: {fileID: 8300000, guid: 175292b4f767ebb4c9132cb75389e953, type: 3}
+  _defaultDragStartSound: {fileID: 8300000, guid: 5668d2608f50b924bba20bcb4eec2bb6, type: 3}
+  _defaultDropSound: {fileID: 8300000, guid: 640a44d223e24254791720af888cc1f6, type: 3}
   _moveDetectionTimestep: 0.05
