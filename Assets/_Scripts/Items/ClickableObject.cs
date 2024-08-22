@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,6 +7,13 @@ public class ClickableObject : InteractableObject
     #region serialized members
 
     [SerializeField] private bool _isDraggable = false;
+
+    [Tooltip("L'objet retournera à sa position initiale lorsqu'il est relâché")]
+    [SerializeField] private bool _returnToRestingPosition = false;
+
+    [SerializeField] private float _returnDuration = 0.75f;
+
+    [SerializeField] private AnimationCurve _returnCurve;
 
     [Tooltip("Définit si l'objet sera centré sur la position de la souris lorsqu'il est tiré ou non")]
     [SerializeField] private bool _centerOnDrag = false;
@@ -79,15 +87,22 @@ public class ClickableObject : InteractableObject
     public AudioClip DropSFX { get => _dropSFX; }
     public bool IsBeingDragged { get; set; } = false;
     public Vector3 lastPosition { get; set; }
+    public bool DisableReturning {  get; set; }
 
     public Rigidbody2D Rigidbody { get; private set; }
     public ObjectHolder Holder { get; set; }
 
-    private bool isMoving = false;
+    private bool _isMoving = false;
     /// <summary>
     /// True si la souris est sortie de la zone cliquable pendant qu'elle maintenait le clic sur l'objet
     /// </summary>
-    private bool mouseHasExitedArea = true;
+    private bool _mouseHasExitedArea = true;
+
+    private bool _disableReturning = false;
+
+    private Vector3 _restingPosition;
+    private Coroutine _returnCoroutine;
+    private bool _isReturning = false;
 
     #endregion
 
@@ -119,6 +134,7 @@ public class ClickableObject : InteractableObject
     {
         base.Awake();
         Rigidbody = GetComponent<Rigidbody2D>();
+        _restingPosition = transform.position;
     }
 
     private void OnEnable()
@@ -157,7 +173,7 @@ public class ClickableObject : InteractableObject
         if (!CheckIfMouseInArea()) return;
 
         HasBeenClickedInArea = true;
-        mouseHasExitedArea = false;
+        _mouseHasExitedArea = false;
 
         ClickManager.Instance.ClickedObjectsThisFrame.Add(this);
     }
@@ -178,9 +194,9 @@ public class ClickableObject : InteractableObject
 
             onClickHeld.Invoke();
 
-            if (mouseHasExitedArea)
+            if (_mouseHasExitedArea)
             {
-                mouseHasExitedArea = false;
+                _mouseHasExitedArea = false;
                 if (CanClickDownOnEnter) onClickedDown.Invoke();
             }
         }
@@ -191,9 +207,9 @@ public class ClickableObject : InteractableObject
                 onClickHeld.Invoke();
             }
 
-            if (!mouseHasExitedArea)
+            if (!_mouseHasExitedArea)
             {
-                mouseHasExitedArea = true;
+                _mouseHasExitedArea = true;
                 if (CanClickUpOnLeave) onClickedUp.Invoke();
             }
         }
@@ -205,30 +221,32 @@ public class ClickableObject : InteractableObject
     private void ClickUp()
     {
         HasBeenClickedInArea = false;
-        mouseHasExitedArea = true;
+        _mouseHasExitedArea = true;
 
         if (HasBeenClickedInArea && (CheckIfMouseInArea() || _clickUpMode == ClickUpMode.Permissive))
         {
             onClickedUp.Invoke();
         }
+        
+        ReturnToRestingPosition();
     }
 
     public bool IsMoving
     {
         get
         {
-            return isMoving;
+            return _isMoving;
         }
         set
         {
-            if (value == true && isMoving == false)
+            if (value == true && _isMoving == false)
             {
-                isMoving = true;
+                _isMoving = true;
                 onMovedStart.Invoke();
             }
-            else if (value == false && isMoving == true)
+            else if (value == false && _isMoving == true)
             {
-                isMoving = false;
+                _isMoving = false;
                 onMovedStop.Invoke();
             }
         }
@@ -237,25 +255,24 @@ public class ClickableObject : InteractableObject
     /// <summary>
     /// True si l'on peut déclencher onClickUp en sortant de la zone cliquable en gardant le le clic appuyé
     /// </summary>
-    private bool CanClickUpOnLeave
-    {
-        get
-        {
-            return _extraEventCalls == HoldLeaveMode.ClickUpOnLeave || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
-                   && !_isDraggable;
-        }
-    }
+    private bool CanClickUpOnLeave => _extraEventCalls == HoldLeaveMode.ClickUpOnLeave
+                                   || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp && !_isDraggable;
 
     /// <summary>
     /// True si l'on peut déclencher onClickUp en sortant de la zone cliquable en gardant le le clic appuyé
     /// </summary>
-    private bool CanClickDownOnEnter
+    private bool CanClickDownOnEnter => _extraEventCalls == HoldLeaveMode.ClickDownOnEnter 
+                                     || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp && !_isDraggable;
+
+    public void ReturnToRestingPosition(float durationMultiplier = 1f)
     {
-        get
+        if (_returnCoroutine != null)
         {
-            return _extraEventCalls == HoldLeaveMode.ClickDownOnEnter || _extraEventCalls == HoldLeaveMode.ClickDownAndClickUp
-                   && !_isDraggable;
+            StopCoroutine(_returnCoroutine);
+            _isReturning = false;
         }
+
+        StartCoroutine(ReturnCoroutine(_returnDuration * durationMultiplier));
     }
 
     /// <summary>
@@ -308,5 +325,27 @@ public class ClickableObject : InteractableObject
     public void LeaveHolder()
     {
         Holder?.ReleaseContent();
+    }
+
+    private IEnumerator ReturnCoroutine(float duration)
+    {
+        _isReturning = true;
+
+        Lock();
+        Vector3 initialPos = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float lerp = _returnCurve.Evaluate(elapsedTime / duration);
+            transform.position = Vector3.Lerp(initialPos, _restingPosition, lerp);
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+
+        transform.position = _restingPosition;
+        Unlock();
+
+        _isReturning = false;
     }
 }

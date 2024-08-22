@@ -6,11 +6,21 @@
         <ui:VisualElement name="DragMainSettings" style="flex-grow: 1; margin-bottom: 10px;">
             <ui:Label tabindex="-1" text="Drag Settings" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
             <uie:PropertyField name="IsDraggable" binding-path="_isDraggable" class="property bool" />
+            <ui:VisualElement name="ReturnSettings" style="flex-grow: 0; flex-direction: row-reverse; justify-content: space-between;">
+                <ui:VisualElement name="ReturnAdvancedSettings" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; overflow: hidden; justify-content: flex-start; align-self: flex-end; width: 500px; align-items: stretch;">
+                    <ui:VisualElement name="Duration" style="flex-grow: 1; flex-direction: row; width: 50%; justify-content: flex-end; overflow: hidden;">
+                        <ui:Label tabindex="-1" text="Duration" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DurationLabel" style="width: auto;" />
+                        <ui:FloatField name="DurationValue" binding-path="_returnDuration" style="width: auto;" />
+                    </ui:VisualElement>
+                    <uie:CurveField name="ReturnCurve" binding-path="_returnCurve" style="flex-direction: row; width: 50%;" />
+                </ui:VisualElement>
+                <uie:PropertyField name="ReturnToRestingPosition" binding-path="_returnToRestingPosition" class="property bool" style="width: 100%;" />
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="DragAdvancedSettings">
             <ui:Foldout text="Advanced Settings" name="Foldout" view-data-key="advancedSettingsFoldout" value="false" class="foldout">
-                <uie:PropertyField name="CenterOnDrag" binding-path="_centerOnDrag" focusable="false" class="property bool" />
                 <ui:VisualElement name="IsDraggableAdvancedSettings" style="flex-grow: 1;">
+                    <uie:PropertyField name="CenterOnDrag" binding-path="_centerOnDrag" focusable="false" class="property bool" />
                     <uie:PropertyField binding-path="_clickUpMode" name="ClickUpMode" class="property enum" />
                     <uie:PropertyField binding-path="_mustStayInAreaToHold" name="MustStayInAreaToHold" class="property bool" />
                     <uie:PropertyField binding-path="_clickHoldMode" name="ClickHoldMode" class="property enum" />

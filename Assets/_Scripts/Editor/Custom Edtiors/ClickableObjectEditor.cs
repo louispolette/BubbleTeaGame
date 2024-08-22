@@ -15,8 +15,7 @@ public class ClickableObjectEditor : CustomEditorBase
 
     public static (string, int)[] _isDraggableMask =
     {
-        ("CenterOnDrag", 1),
-        ("IsDraggableAdvancedSettings", 0),
+        ("DragAdvancedSettings", 1),
         ("Click", 0),
         ("DragStart", 1),
         ("Drop", 1),
@@ -24,11 +23,18 @@ public class ClickableObjectEditor : CustomEditorBase
         ("DragAndMoveEvents", 1)
     };
 
+    public static (string, int)[] _returnMask =
+    {
+        ("ReturnAdvancedSettings", 1),
+    };
+
     public static void SetCallbacks(CustomEditorBase target)
     {
         SerializedProperty isDraggableProperty = target.serializedObject.FindProperty("_isDraggable");
+        SerializedProperty returnProperty = target.serializedObject.FindProperty("_returnToRestingPosition");
 
         target.AddConditionalDisplay("IsDraggable", isDraggableProperty, _isDraggableMask);
+        target.AddConditionalDisplay("ReturnToRestingPosition", returnProperty, _returnMask);
     }
 
     private void OnEnable()
