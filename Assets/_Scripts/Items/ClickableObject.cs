@@ -221,7 +221,7 @@ public class ClickableObject : InteractableObject
         {
             onClickedUp.Invoke();
 
-            if (_returnToRestingPosition)
+            if (_returnToRestingPosition && Holder == null)
             {
                 ReturnToRestingPosition();
             }
@@ -323,7 +323,10 @@ public class ClickableObject : InteractableObject
 
     public void LeaveHolder()
     {
-        Holder?.ReleaseContent();
+        if (Holder != null)
+        {
+            Holder.ReleaseContent();
+        }
     }
 
     private IEnumerator ReturnCoroutine(float duration)

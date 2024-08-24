@@ -472,6 +472,63 @@ SortingGroup:
   m_SortingLayer: -1
   m_SortingOrder: 1
   m_SortAtRoot: 0
+--- !u!1001 &167233036
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.2999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.7830002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866020124079055881, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6329202140515029234, guid: 141d8fee8107088469efe19723ff4819, type: 3}
+      propertyPath: m_Name
+      value: BubbleTea
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 141d8fee8107088469efe19723ff4819, type: 3}
 --- !u!1 &167560833
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +760,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _requiredTag:
+  - Items/BubbleTea
 --- !u!1 &539586575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,6 +1230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drink (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
+      propertyPath: m_TagString
+      value: Items/Ingredient
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1602,6 +1665,10 @@ PrefabInstance:
     - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
       propertyPath: m_Name
       value: Drink (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
+      propertyPath: m_TagString
+      value: Items/Ingredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2310,6 +2377,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drink (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
+      propertyPath: m_TagString
+      value: Items/Ingredient
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2735,6 +2806,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drink (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
+      propertyPath: m_TagString
+      value: Items/Ingredient
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2796,6 +2871,10 @@ PrefabInstance:
     - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
       propertyPath: m_Name
       value: Drink (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101472272806511372, guid: 7a93430bf1cb83e468ac517f21e94b85, type: 3}
+      propertyPath: m_TagString
+      value: Items/Ingredient
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2883,6 +2962,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _requiredTag: []
 --- !u!1 &1963107220
 GameObject:
   m_ObjectHideFlags: 0
@@ -3746,3 +3826,4 @@ SceneRoots:
   - {fileID: 1446437733}
   - {fileID: 243954220}
   - {fileID: 1998811777}
+  - {fileID: 167233036}

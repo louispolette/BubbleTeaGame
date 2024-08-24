@@ -4,6 +4,10 @@
     <ui:Instance template="InteractableObjectVisualTree" name="InteractableObjectVisualTree" />
     <ui:VisualElement name="Events" class="container" style="flex-grow: 1;">
         <ui:Label tabindex="-1" text="Events" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
-        <uie:PropertyField binding-path="onObjectReceived" class="event" />
+        <uie:PropertyField binding-path="onObjectReceived" name="PropertyField" class="event" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Restrictions" class="container" style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="Restrictions" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="header" style="-unity-font-style: bold; font-size: 24px;" />
+        <uie:PropertyField binding-path="_requiredTag" name="PropertyField" class="foldout" />
     </ui:VisualElement>
 </ui:UXML>

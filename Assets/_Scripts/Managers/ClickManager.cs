@@ -49,6 +49,12 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     public static event MouseClickUp OnMouseClickUp;
 
+    public delegate void MouseClickUpLate();
+    /// <summary>
+    /// Invoqué juste après MouseClickUp
+    /// </summary>
+    public static event MouseClickUpLate OnMouseClickUpLate;
+
     public delegate void ReleaseObject();
     /// <summary>
     /// Invoqué lorsque un objet est relâché
@@ -142,12 +148,12 @@ public class ClickManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            TriggerClickUpEvent();
-
             if (draggedObject)
             {
                 StopDraggingObject();
             }
+
+            TriggerClickUpEvent();
         }
     }
 
@@ -188,6 +194,7 @@ public class ClickManager : MonoBehaviour
     private void TriggerClickUpEvent()
     {
         OnMouseClickUp?.Invoke();
+        OnMouseClickUpLate?.Invoke();
     }
 
     /// <summary>
