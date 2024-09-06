@@ -4,7 +4,7 @@ public abstract class Ingredient : MonoBehaviour
 {
     [Space]
 
-    [SerializeField] private IngredientData _data;
+    [SerializeField] protected IngredientData _data;
 
     public abstract IngredientTargetMode IngredientTarget { get;}
 
