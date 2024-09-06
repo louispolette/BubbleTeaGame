@@ -75,7 +75,7 @@ public class ClickManager : MonoBehaviour
 
     private void Awake()
     {
-        #region singleton
+        #region singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

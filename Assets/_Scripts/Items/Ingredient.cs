@@ -4,7 +4,7 @@ public abstract class Ingredient : MonoBehaviour
 {
     [Space]
 
-    [SerializeField] protected IngredientData _data;
+    [SerializeField] private IngredientData _data;
 
     public abstract IngredientTargetMode IngredientTarget { get;}
 
@@ -17,14 +17,14 @@ public abstract class Ingredient : MonoBehaviour
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        ApplyData();
+        ApplyData(_data);
     }
 
-    private void ApplyData()
+    public void ApplyData(IngredientData data)
     {
-        _spriteRenderer.sprite = _data.sprite;
-        gameObject.name = _data.name;
-        Debug.Log("Data Applied");
+        _spriteRenderer.sprite = data.sprite;
+        gameObject.name = data.name;
+        Debug.Log("IngredientData Applied");
     }
 
     public void AddIngredient(CookableObject target)
