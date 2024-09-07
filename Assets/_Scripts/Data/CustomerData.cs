@@ -6,5 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class CustomerData : ScriptableObject
 {
-    
+    public float patience = 60f;
+    public float movementSpeed = 5f;
+    public Color color = Color.white;
 }

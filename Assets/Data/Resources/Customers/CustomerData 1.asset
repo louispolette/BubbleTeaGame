@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef6252bbce92a045b4da6a4df0934b7, type: 3}
   m_Name: CustomerData 1
   m_EditorClassIdentifier: 
+  patience: 5
+  movementSpeed: 5
+  color: {r: 0.3443396, g: 1, b: 0.43126068, a: 1}

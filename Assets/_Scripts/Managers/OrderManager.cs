@@ -1,50 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class OrderManager : MonoBehaviour
 {
     [Space]
 
-    [SerializeField] private SpeechBubble _speechBubbleInstance;
-    [SerializeField] private Customer _customerPrefab;
+    [SerializeField] private SpeechBubble _speechBubble;
+    [SerializeField] private Customer _customer;
 
     [Space]
 
-    [SerializeField] private Vector2 _customerSpawnpoint;
     [SerializeField] private float _customerInterval = 3f;
+
+    [Header("PLACEHOLDERS")]
+
+    [SerializeField] private float _orderDuration = 2.5f;
+
+    [Space]
+
+    [SerializeField] private OrderResult _orderResult = OrderResult.Success;
+
+    private enum OrderResult { Success, Failure }
 
     public static OrderManager Instance;
 
-    private int _orderNumber = 0;
-    private bool _gameStarted = false;
-    private bool _sendCustomers = false;
+    private bool _shopOpen = false;
     private float _customerLeftTime;
 
-    private Customer _currentCustomer;
-    private CustomerState _currentCustomerState = CustomerState.None;
     private Coroutine _orderCoroutine;
 
-    public CustomerState CurrentCustomerState => _currentCustomerState;
+    private Queue<CustomerData> _customerQueue = new Queue<CustomerData>();
 
-    public enum CustomerState
-    {
-        None,
-        Incoming,
-        Ordering,
-        Waiting,
-        Leaving,
-    }
-
+    #region event subscriptions
     private void OnEnable()
     {
         Customer.OnCustomerArrived += StartOrder;
+        Customer.OnCustomerGone += CustomerGone;
     }
 
     private void OnDisable()
     {
         Customer.OnCustomerArrived -= StartOrder;
+        Customer.OnCustomerGone -= CustomerGone;
     }
+    #endregion
 
     private void Awake()
     {
@@ -58,36 +59,67 @@ public class OrderManager : MonoBehaviour
             Instance = this;
         }
         #endregion
+
+        BuildCustomerQueue();
+    }
+
+    private void Start()
+    {
+        StartGame();
     }
 
     private void Update()
     {
-        if (_currentCustomer != null)
+        if (_customer.State != CustomerState.Absent)
         {
-            if (_currentCustomerState == CustomerState.Waiting)
+            if (_customer.State == CustomerState.Waiting)
             {
                 DecreaseCustomerPatience();
             }
         }
-        else if (_sendCustomers)
+        else if (_shopOpen)
         {
+            if (_customerQueue.Count <= 0)
+            {
+                EndGame();
+            }
+
             WaitForNextCustomer();
+        }
+    }
+
+    private void BuildCustomerQueue()
+    {
+        _customerQueue.Clear();
+
+        List<CustomerData> customerDatabase = Resources.LoadAll<CustomerData>("Customers").ToList();
+
+        while (customerDatabase.Count > 0)
+        {
+            int randomIndex = Random.Range(0, customerDatabase.Count);
+
+            _customerQueue.Enqueue(customerDatabase[randomIndex]);
+
+            customerDatabase.RemoveAt(randomIndex);
         }
     }
 
     public void StartGame()
     {
-        _gameStarted = true;
-        _sendCustomers = true;
+        _shopOpen = true;
         CustomerNew();
+    }
+
+    private void EndGame()
+    {
+        _shopOpen = false;
     }
 
     private void StartOrder()
     {
-        if (_currentCustomerState != CustomerState.Incoming) return;
-
-        _orderNumber++;
-        _currentCustomerState = CustomerState.Ordering;
+        if (_customer.State != CustomerState.Incoming) return;
+        
+        _customer.State = CustomerState.Ordering;
 
         if (_orderCoroutine != null)
         {
@@ -99,7 +131,7 @@ public class OrderManager : MonoBehaviour
 
     private void StartWaiting()
     {
-        _currentCustomerState = CustomerState.Waiting;
+        _customer.State = CustomerState.Waiting;
     }
 
     private void WaitForNextCustomer()
@@ -112,29 +144,33 @@ public class OrderManager : MonoBehaviour
 
     private void DecreaseCustomerPatience()
     {
-        _currentCustomer.Patience -= Time.deltaTime;
+        _customer.DoPatienceTick();
 
-        if (_currentCustomer.Patience <= 0)
+        if (_customer.Patience <= 0)
         {
             OrderFail();
         }
     }
 
-    private CustomerData ChooseCustomerData()
-    {
-        return null;
-    }
-
     public void CheckOrder()
     {
-        // Check if the given order is correct and call either OrderSuccess() or OrderFail()
+        if (_orderResult == OrderResult.Success)
+        {
+            OrderSuccess();
+        }
+        else
+        {
+            OrderFail();
+        }
     }
 
+    [ContextMenu("End Order/Success")]
     private void OrderSuccess()
     {
         CustomerLeave();
     }
 
+    [ContextMenu("End Order/Fail")]
     private void OrderFail()
     {
         CustomerLeave();
@@ -142,31 +178,38 @@ public class OrderManager : MonoBehaviour
 
     private void CustomerNew()
     {
-        _currentCustomer = Instantiate(_customerPrefab, _customerSpawnpoint, Quaternion.identity);
-        var customerData = ChooseCustomerData();
-        _currentCustomer.ApplyData(customerData);
-        _currentCustomer.Enter();
+        _customer.TeleportToSpawnpoint();
 
-        _currentCustomerState = CustomerState.Incoming;
+        var customerData = _customerQueue.Dequeue();
+        _customer.Init(customerData);
+
+        _customer.State = CustomerState.Incoming;
+        _customer.EnterShop();
     }
 
     private void CustomerLeave()
     {
-        _currentCustomer.Leave();
-        _currentCustomer = null;
-        _currentCustomerState = CustomerState.Leaving;
         _customerLeftTime = Time.time;
+
+        _customer.State = CustomerState.Leaving;
+        _customer.LeaveShop();
     }
 
-    public void NoCustomers()
+    private void CustomerGone()
     {
-        _currentCustomer = null;
-        _currentCustomerState = CustomerState.None;
+        _customer.State = CustomerState.Absent;
     }
 
     private IEnumerator OrderCoroutine()
     {
-        //Show the order
+        float timeRemaining = _orderDuration;
+
+        while (timeRemaining > 0)
+        {
+            // Do stuff
+
+            timeRemaining -= Time.deltaTime;
+        }
 
         yield return null;
 

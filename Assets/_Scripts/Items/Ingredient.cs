@@ -17,7 +17,11 @@ public abstract class Ingredient : MonoBehaviour
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        ApplyData(_data);
+        
+        if (_data != null)
+        {
+            ApplyData(_data);
+        }
     }
 
     public void ApplyData(IngredientData data)
