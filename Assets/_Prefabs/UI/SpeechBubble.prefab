@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a0aa98eca00340a8829c4195011e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bubbleRenderer: {fileID: 2497227274965204945}
 --- !u!210 &298514997146097973
 SortingGroup:
   m_ObjectHideFlags: 0

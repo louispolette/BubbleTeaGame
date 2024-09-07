@@ -7,6 +7,7 @@ public enum CustomerState
     Incoming,
     Ordering,
     Waiting,
+    Reacting,
     Leaving,
 }
 
@@ -90,14 +91,21 @@ public class Customer : MonoBehaviour
         Move(_waitPosition.position, CustomerMoveContext.Entering);
     }
 
+    public void ReactToOrder()
+    {
+        _patienceBar.Hide();
+    }
+
     public void LeaveShop()
     {
+        _patienceBar.Hide();
         Move(_spawnpoint.position, CustomerMoveContext.Leaving);
     }
 
     private void Arrive()
     {
         OnCustomerArrived?.Invoke();
+        _patienceBar.Show();
     }
 
     private void Move(Vector3 destination, CustomerMoveContext context)

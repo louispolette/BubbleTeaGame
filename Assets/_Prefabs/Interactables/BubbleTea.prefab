@@ -754,7 +754,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _requiredTag: []
+  _requiredTag:
+  - Items/Ingredient
 --- !u!1 &6363127821783167410
 GameObject:
   m_ObjectHideFlags: 0

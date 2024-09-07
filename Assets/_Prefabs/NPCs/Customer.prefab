@@ -165,7 +165,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  _fillAmount: 1
+  _fillLevel: 1
   _alwaysUpdate: 1
 --- !u!1 &7491725917190687270
 GameObject:
@@ -206,7 +206,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7491725917190687270}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -300,6 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnpoint: {fileID: 0}
   _waitPosition: {fileID: 0}
+  _customerRenderer: {fileID: 4952076108976749332}
 --- !u!210 &7290018942779289782
 SortingGroup:
   m_ObjectHideFlags: 0

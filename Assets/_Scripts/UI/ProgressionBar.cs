@@ -55,6 +55,8 @@ public class ProgressionBar : MonoBehaviour
     [ContextMenu("Update Bar")]
     private void UpdateBar()
     {
+        if (!_spriteRenderer.enabled) return;
+
         ApplyScale();
         ApplyColor();
     }
@@ -81,5 +83,16 @@ public class ProgressionBar : MonoBehaviour
         if (!_useGradient) return;
 
         _spriteRenderer.color = _colorGradient.Evaluate(_fillLevel);
+    }
+
+    public void Hide()
+    {
+        _spriteRenderer.enabled = false;
+    }
+
+    public void Show()
+    {
+        UpdateBar();
+        _spriteRenderer.enabled = true;
     }
 }

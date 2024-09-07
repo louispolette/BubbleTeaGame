@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CustomerData 1
   m_EditorClassIdentifier: 
   patience: 5
-  movementSpeed: 5
+  movementSpeed: 7.5
   color: {r: 0.3443396, g: 1, b: 0.43126068, a: 1}

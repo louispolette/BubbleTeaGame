@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SpeechBubble : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] SpriteRenderer _bubbleRenderer;
+
+    public void Hide()
     {
-        
+        _bubbleRenderer.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Show()
     {
-        
+        _bubbleRenderer.enabled = true;
     }
 }

@@ -14,9 +14,15 @@ public class OrderManager : MonoBehaviour
 
     [SerializeField] private float _customerInterval = 3f;
 
+    [Header("Audio")]
+
+    [SerializeField] private AudioClip _correctOrderSFX;
+    [SerializeField] private AudioClip _wrongOrderSFX;
+
     [Header("PLACEHOLDERS")]
 
     [SerializeField] private float _orderDuration = 2.5f;
+    [SerializeField] private float _reactionDuration = 2.5f;
 
     [Space]
 
@@ -30,6 +36,7 @@ public class OrderManager : MonoBehaviour
     private float _customerLeftTime;
 
     private Coroutine _orderCoroutine;
+    private Coroutine _reactionCoroutine;
 
     private Queue<CustomerData> _customerQueue = new Queue<CustomerData>();
 
@@ -121,12 +128,14 @@ public class OrderManager : MonoBehaviour
         
         _customer.State = CustomerState.Ordering;
 
+        _speechBubble.Show();
+
         if (_orderCoroutine != null)
         {
             StopCoroutine(_orderCoroutine);
         }
 
-        _orderCoroutine = StartCoroutine(OrderCoroutine());
+        _orderCoroutine = StartCoroutine(OrderCoroutine(_orderDuration));
     }
 
     private void StartWaiting()
@@ -148,32 +157,54 @@ public class OrderManager : MonoBehaviour
 
         if (_customer.Patience <= 0)
         {
-            OrderFail();
+            EndOrder(false, true);
         }
     }
 
-    public void CheckOrder()
+    public void CheckOrder() // Actually implement this
     {
         if (_orderResult == OrderResult.Success)
         {
-            OrderSuccess();
+            EndOrder(true);
         }
         else
         {
-            OrderFail();
+            EndOrder(false);
         }
     }
 
-    [ContextMenu("End Order/Success")]
-    private void OrderSuccess()
+    private void EndOrder(bool isSuccess, bool skipReaction = false)
     {
-        CustomerLeave();
+        if (isSuccess)
+        {
+            AudioManager.Instance.PlaySound(_correctOrderSFX, 1f);
+        }
+        else
+        {
+            AudioManager.Instance.PlaySound(_wrongOrderSFX, 1f);
+        }
+
+        if (skipReaction)
+        {
+            CustomerLeave();
+            return;
+        }
+
+        CustomerReaction();
     }
 
-    [ContextMenu("End Order/Fail")]
-    private void OrderFail()
+    private void CustomerReaction()
     {
-        CustomerLeave();
+        _customer.State = CustomerState.Reacting;
+
+        _customer.ReactToOrder();
+
+        if (_reactionCoroutine != null)
+        {
+            StopCoroutine(_reactionCoroutine);
+        }
+
+        _reactionCoroutine = StartCoroutine(ReactionCoroutine(_reactionDuration));
     }
 
     private void CustomerNew()
@@ -191,6 +222,7 @@ public class OrderManager : MonoBehaviour
     {
         _customerLeftTime = Time.time;
 
+        _speechBubble.Hide();
         _customer.State = CustomerState.Leaving;
         _customer.LeaveShop();
     }
@@ -200,19 +232,57 @@ public class OrderManager : MonoBehaviour
         _customer.State = CustomerState.Absent;
     }
 
-    private IEnumerator OrderCoroutine()
+    private IEnumerator OrderCoroutine(float duration)
     {
-        float timeRemaining = _orderDuration;
+        float timeRemaining = duration;
 
         while (timeRemaining > 0)
         {
-            // Do stuff
+            // Do stuff overtime
 
             timeRemaining -= Time.deltaTime;
+            yield return null;
         }
-
-        yield return null;
 
         StartWaiting();
     }
+
+    private IEnumerator ReactionCoroutine(float duration)
+    {
+        float timeRemaining = duration;
+
+        while (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        CustomerLeave();
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("End Order/Success")]
+    private void ForceOrderSuccess()
+    {
+        EndOrder(true);
+    }
+
+    [ContextMenu("End Order/Fail")]
+    private void ForceOrderFail()
+    {
+        EndOrder(false);
+    }
+
+    [ContextMenu("End Order (No Reaction)/Success")]
+    private void ForceOrderSuccessNoReaction()
+    {
+        EndOrder(true, true);
+    }
+
+    [ContextMenu("End Order (No Reaction)/Fail")]
+    private void ForceOrderFailNoReaction()
+    {
+        EndOrder(false, true);
+    }
+#endif
 }
