@@ -16,30 +16,23 @@ public abstract class CustomEditorBase : Editor
         {
             if (_visualTree == null)
             {
-                VisualTreeAsset asset = AssetLoadingUtils.LoadVisualTreeAsset(VisualTreePath);
-                _visualTree = asset;
+                GetVisualTree();
             }
 
             return _visualTree;
         }
     }
 
+    protected bool _hasVisualTree = true;
+
     protected abstract string VisualTreePath { get; }
 
     protected List<ConditionalEditorDisplay> _conditionalEditorDisplays = new List<ConditionalEditorDisplay>();
 
-    /*public VisualElement Root
+    private void OnEnable()
     {
-        get
-        {
-            if (_root == null)
-            {
-                BuildTree();
-            }
-
-            return _root;
-        }
-    }*/
+        GetVisualTree();
+    }
 
     public override VisualElement CreateInspectorGUI()
     {
@@ -52,6 +45,18 @@ public abstract class CustomEditorBase : Editor
         }
 
         return _root;
+    }
+
+    private void GetVisualTree()
+    {
+        VisualTreeAsset asset = AssetLoadingUtils.LoadVisualTreeAsset(VisualTreePath);
+
+        if (asset == null)
+        {
+            _hasVisualTree = false;
+        }
+
+        _visualTree = asset;
     }
 
     protected abstract void BuildTree();

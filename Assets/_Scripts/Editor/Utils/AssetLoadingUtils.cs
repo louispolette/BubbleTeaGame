@@ -11,12 +11,6 @@ namespace Utils.AssetLoading
         {
             var asset = Resources.Load<VisualTreeAsset>(path);
 
-            if (asset == null)
-            {
-                Debug.LogError($"Could not find VisualTreeAsset at Resources/{path}");
-                return null;
-            }
-
             return asset;
         }
     }

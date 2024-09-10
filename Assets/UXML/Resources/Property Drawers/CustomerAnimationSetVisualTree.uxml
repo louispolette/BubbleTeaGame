@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/UXML/Resources/StyleSheets/MyStyleSheet.uss?fileID=7433441132597879392&amp;guid=caa10adc817bb2347af70c8abdc5d6b3&amp;type=3#MyStyleSheet" />
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:VisualElement name="Container" class="container" style="flex-grow: 1;">
+            <uie:PropertyField name="IdleSprite" binding-path="idleSprite" />
+            <uie:PropertyField name="SuccessSprite" binding-path="successSprite" />
+            <uie:PropertyField name="FailureSprite" binding-path="failureSprite" />
+            <ImageSelector />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

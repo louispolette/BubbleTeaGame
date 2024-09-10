@@ -71,7 +71,7 @@ public class Customer : MonoBehaviour
     {
         _basePatience = data.patience;
         _movementSpeed = data.movementSpeed;
-        _customerRenderer.color = data.color;
+        //_customerRenderer.sprite = data.mainSprite;
     }
 
     [ContextMenu("Move Customer/Spawnpoint")]

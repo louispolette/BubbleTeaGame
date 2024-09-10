@@ -99,7 +99,7 @@ public class OrderManager : MonoBehaviour
     {
         _customerQueue.Clear();
 
-        List<CustomerData> customerDatabase = Resources.LoadAll<CustomerData>("Customers").ToList();
+        List<CustomerData> customerDatabase = Resources.LoadAll<CustomerData>("Customers/Customer Data").ToList();
 
         while (customerDatabase.Count > 0)
         {

@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patience: 5
   movementSpeed: 7.5
-  color: {r: 0.3443396, g: 1, b: 0.43126068, a: 1}
+  animationSet:
+    idleSprite: {fileID: 21300000, guid: c49755b28d92d5644a923b25de862e5e, type: 3}
+    successSprite: {fileID: 21300000, guid: 65c888bbcb4580940a15306f5dcd0f03, type: 3}
+    failureSprite: {fileID: 21300000, guid: 701ba4fb85145c84aa010c8cfb818527, type: 3}
