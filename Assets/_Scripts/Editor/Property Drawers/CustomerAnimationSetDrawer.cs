@@ -35,10 +35,10 @@ public class CustomerAnimationSetDrawer : PropertyDrawer
             VisualTree.CloneTree(root);
         }
 
-        /*Image image = new Image();
+        Image image = new Image();
         image.sprite = (Sprite)property.FindPropertyRelative("idleSprite").objectReferenceValue;
         Debug.Log(image);
-        root.Add(image);*/
+        root.Add(image);
 
         return root;
     }

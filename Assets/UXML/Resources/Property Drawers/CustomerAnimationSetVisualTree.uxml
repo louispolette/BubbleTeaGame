@@ -5,7 +5,6 @@
             <uie:PropertyField name="IdleSprite" binding-path="idleSprite" />
             <uie:PropertyField name="SuccessSprite" binding-path="successSprite" />
             <uie:PropertyField name="FailureSprite" binding-path="failureSprite" />
-            <ImageSelector />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
